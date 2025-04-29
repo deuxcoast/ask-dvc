@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for post in posts %}
+        <div class="card">
+            <h5 class="card-header">{{ post.title }}</h5>
+            <div class="card-body">
+                <h3 class="card-title">@{{ post.user.username }}</h3>
+                <p class="card-text">{{ post.body }}</p>
+            </div>
+        </div>
+        <br />
+        <br />
+    {% endfor %}
+    <div class="col-4">
+        {% if form %}
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br />
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        {% endif %}
+    </div>
+    <br />
+    <br />
+{% endblock %}
