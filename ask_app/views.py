@@ -9,6 +9,7 @@ from .forms import PostForm, SignUpForm
 from .models import Post, Profile
 
 
+# displays all posts on index (home) page
 def index(request):
     if request.user.is_authenticated:
         form = PostForm(request.POST or None)
@@ -17,12 +18,9 @@ def index(request):
             if form.is_valid():
                 post = form.save(commit=False)
                 post.user = request.user
-                messages.save()
+                meep.save()
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
-
-        posts = Post.objects.all().order_by("-created_at")
-        return render(request, "index.html", {"posts": posts, "form": form})
 
     else:
         posts = Post.objects.all().order_by("-created_at")
@@ -114,5 +112,22 @@ def signup_user(request):
     return render(request, "sign_up.html", {"form": form})
 
 
-def post(request, pk):
-    return render(request, "post.html", {})
+def post(request):
+    # if the user is logged in, allow them to post
+    if request.user.is_authenticated:
+        form = PostForm(request.POST or None)
+
+        if request.method == "POST":
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.user = request.user
+                post.save()
+                messages.success(request, "Your post was successful.")
+                return redirect("index")
+
+        posts = Post.objects.all().order_by("-created_at")
+        return render(request, "post.html", {"posts": posts, "form": form})
+
+
+def post_view(request):
+    return render(request, "post_view.html", {})

@@ -5,18 +5,18 @@ from django.contrib.auth.models import User
 from .models import Post
 
 
-class PostForm(forms.Form):
-    # body = forms.CharField(
-    #     required=True,
-    #     widget=forms.widgets.Textarea(
-    #         attrs={"placeholder": "What are you wondering?", "class": "form-control"}
-    #     ),
-    #     label="",
-    # )
-    #
-    # class Meta:
-    #     model = Post
-    #     exclude = ("user",)
+class PostForm(forms.ModelForm):
+    body = forms.CharField(
+        required=True,
+        widget=forms.widgets.Textarea(
+            attrs={"placeholder": "Ask a question!", "class": "form-control"}
+        ),
+        label="",
+    )
+
+    class Meta:
+        model = Post
+        exclude = ("user",)
 
 
 class SignUpForm(UserCreationForm):
