@@ -3,9 +3,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
-from .forms import PostForm, SignUpForm
+from .forms import PostForm, SignUpForm, ProfileSettingsForm
 from .models import Post, Profile
 
 # displays all posts on index (home) page
@@ -119,12 +119,17 @@ def signup_user(request):
 
     return render(request, "sign_up.html", {"form": form})
 
+
 def profile_settings(request, pk):
     if request.user.is_authenticated:
-        profile = Profile.objects.get(user_id=pk)
-        # settings = ?
+        profile = get_object_or_404(Profile, user_id=pk)
 
-    return render(request, 'settings.html', {'profile': profile})
+        # Pass the profile instance to the template
+        return render(request, 'settings.html', {'profile': profile})
+
+    # Redirect to login page if user is not authenticated
+    return redirect('login')
+
 
 def post(request):
     # if the user is logged in, allow them to post
@@ -146,3 +151,18 @@ def post(request):
     #     posts = Post.objects.all().order_by("-created_at")
     #     return render(request, "index.html", {"posts": posts})
 
+def edit_profile_settings(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    profile = get_object_or_404(Profile, user_id=pk)
+
+    if request.method == "POST":
+        form = ProfileSettingsForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_settings', pk=pk)  # Redirect after saving
+    else:
+        form = ProfileSettingsForm(instance=profile)
+
+    return render(request, 'settings_edit.html', {'form': form, 'profile': profile})

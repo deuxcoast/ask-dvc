@@ -9,7 +9,7 @@ class PostForm(forms.ModelForm):
     body = forms.CharField(
         required=True,
         widget=forms.widgets.Textarea(
-            attrs={"placeholder": "Ask a question!", "class": "form-control"}
+            attrs={"placeholder": "What is your question?", "class": "form-control"}
         ),
         label="",
     )
@@ -57,7 +57,7 @@ class SignUpForm(UserCreationForm):
         super(SignUpForm, self).__init__(*args, **kwargs)
 
         self.fields["username"].widget.attrs["class"] = "form-control"
-        self.fields["username"].widget.attrs["placeholder"] = "User Name"
+        self.fields["username"].widget.attrs["placeholder"] = "Username"
         self.fields["username"].label = ""
         self.fields["username"].help_text = (
             '<span class="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
@@ -77,25 +77,48 @@ class SignUpForm(UserCreationForm):
             '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
         )
 
+from django import forms
+from .models import Profile
+
 class ProfileSettingsForm(forms.ModelForm):
-    # picture = ?
+    picture = forms.ImageField(
+        required=True,
+        widget=forms.FileInput(
+            attrs={"accept": "image/*", "class": "form-control"}
+        ),
+        label="Profile Picture",
+    )
     username = forms.CharField(
         required=True,
-        widget=forms.widgets.Textarea(
-            attrs={"placeholder": Profile.user.username, "class": "form-control"}
+        widget=forms.Textarea(
+            attrs={"class": "form-control"}
         ),
-        label="",
+        label="Username",
     )
     bio = forms.CharField(
         required=True,
-        widget=forms.widgets.Textarea(
-            attrs={"placeholder": Profile.user.bio, "class": "form-control"}
+        widget=forms.Textarea(
+            attrs={"class": "form-control"}
         ),
-        label="",
+        label="Bio",
     )
-    # light_mode = ?
-
+    light_mode = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={"class": "form-check-input"}
+        ),
+        label="Color Theme",
+    )
 
     class Meta:
-        model = Post
+        model = Profile
+        fields = ["picture", "bio", "light_mode"]  # Removed 'username' because it's part of the User model
         exclude = ("user",)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.user:
+            self.fields["username"].widget.attrs["placeholder"] = self.instance.user.username
+            self.fields["bio"].widget.attrs["placeholder"] = self.instance.bio
+            self.fields["picture"].widget.attrs["placeholder"] = self.instance.picture
+            self.fields["light_mode"].widget.attrs["placeholder"] = str(self.instance.light_mode)

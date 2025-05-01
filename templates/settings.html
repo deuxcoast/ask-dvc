@@ -1,4 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container mt-5">
+    <h2>Profile Settings</h2>
 
+    <div class="card p-4">
+        <h4>Current Settings</h4>
+
+        <div class="mb-3">
+            <strong>Profile Picture:</strong><br>
+            <img src="{{ Profile.user.picture.url }}" alt="Profile Picture" class="img-thumbnail" width="150">
+        </div>
+
+        <div class="mb-3">
+            <strong>Username:</strong> {{ Profile.user.username }}
+        </div>
+
+        <div class="mb-3">
+            <strong>Bio:</strong> {{ Profile.user.bio }}
+        </div>
+
+        <div class="mb-3">
+            <strong>Color Theme:</strong> {% if Profile.user.light_mode %} Light Mode {% else %} Dark Mode {% endif %}
+        </div>
+
+        <a href="{% url 'edit_settings' request.user.id %}" class="btn btn-primary">Edit Settings</a>
+    </div>
+</div>
 {% endblock %}
