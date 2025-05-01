@@ -8,7 +8,7 @@ class Post(models.Model):
     # The user who made the post
     user = models.ForeignKey(User, related_name="posts", on_delete=models.DO_NOTHING)
     # Title text of the post
-    title = models.CharField(max_length=80, default="Default Title")
+    title = models.CharField(max_length=80)
     # Body text of the post
     body = models.CharField(max_length=5000)
     # Date post was created
