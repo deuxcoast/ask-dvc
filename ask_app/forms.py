@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from .models import Post
 
 
-class PostForm(forms.Form):
+class PostForm(forms.ModelForm):
     body = forms.CharField(
         required=True,
         widget=forms.widgets.Textarea(

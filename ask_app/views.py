@@ -17,7 +17,7 @@ def index(request):
             if form.is_valid():
                 post = form.save(commit=False)
                 post.user = request.user
-                meep.save()
+                post.save()
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
 
@@ -112,3 +112,6 @@ def signup_user(request):
             return redirect("index")
 
     return render(request, "sign_up.html", {"form": form})
+
+def profile_settings(request, pk):
+    return render(request, 'settings.html', {})
