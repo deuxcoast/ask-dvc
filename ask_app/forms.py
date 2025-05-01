@@ -2,14 +2,14 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Post
+from .models import Post, Profile
 
 
 class PostForm(forms.ModelForm):
     body = forms.CharField(
         required=True,
         widget=forms.widgets.Textarea(
-            attrs={"placeholder": "What are you wondering?", "class": "form-control"}
+            attrs={"placeholder": "Ask a question!", "class": "form-control"}
         ),
         label="",
     )
@@ -76,3 +76,26 @@ class SignUpForm(UserCreationForm):
         self.fields["password2"].help_text = (
             '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
         )
+
+class ProfileSettingsForm(forms.ModelForm):
+    # picture = ?
+    username = forms.CharField(
+        required=True,
+        widget=forms.widgets.Textarea(
+            attrs={"placeholder": Profile.user.username, "class": "form-control"}
+        ),
+        label="",
+    )
+    bio = forms.CharField(
+        required=True,
+        widget=forms.widgets.Textarea(
+            attrs={"placeholder": Profile.user.bio, "class": "form-control"}
+        ),
+        label="",
+    )
+    # light_mode = ?
+
+
+    class Meta:
+        model = Post
+        exclude = ("user",)

@@ -8,11 +8,10 @@ from django.shortcuts import redirect, render
 from .forms import PostForm, SignUpForm
 from .models import Post, Profile
 
-
+# displays all posts on index (home) page
 def index(request):
-    if request.user.is_authenticated:
-        form = PostForm(request.POST or None)
-
+    # if request.user.is_authenticated:
+    #     form = PostForm(request.POST or None)
         if request.method == "POST":
             if form.is_valid():
                 post = form.save(commit=False)
@@ -20,11 +19,18 @@ def index(request):
                 post.save()
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
+    #     # if request.method == "POST":
+    #     #     if form.is_valid():
+    #     #         post = form.save(commit=False)
+    #     #         post.user = request.user
+    #     #         post.save()
+    #     #         messages.success(request, "Your post was successful.")
+    #     #         return redirect("index")
 
-        posts = Post.objects.all().order_by("-created_at")
-        return render(request, "index.html", {"posts": posts, "form": form})
+    #     # posts = Post.objects.all().order_by("-created_at")
+    #     # return render(request, "index.html", {"posts": posts, "form": form})
 
-    else:
+    # else:
         posts = Post.objects.all().order_by("-created_at")
         return render(request, "index.html", {"posts": posts})
 
@@ -114,4 +120,29 @@ def signup_user(request):
     return render(request, "sign_up.html", {"form": form})
 
 def profile_settings(request, pk):
-    return render(request, 'settings.html', {})
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user_id=pk)
+        # settings = ?
+
+    return render(request, 'settings.html', {'profile': profile})
+
+def post(request):
+    # if the user is logged in, allow them to post
+    if request.user.is_authenticated:
+        form = PostForm(request.POST or None)
+
+        if request.method == "POST":
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.user = request.user
+                post.save()
+                messages.success(request, "Your post was successful.")
+                return redirect("index")
+
+        posts = Post.objects.all().order_by("-created_at")
+        return render(request, "post.html", {"posts": posts, "form": form})
+
+    # else:
+    #     posts = Post.objects.all().order_by("-created_at")
+    #     return render(request, "index.html", {"posts": posts})
+

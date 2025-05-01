@@ -8,7 +8,7 @@ class Post(models.Model):
     # The user who made the post
     user = models.ForeignKey(User, related_name="posts", on_delete=models.DO_NOTHING)
     # Title text of the post
-    title = models.CharField(max_length=80, default="Default Title")
+    title = models.CharField(max_length=80)
     # Body text of the post
     body = models.CharField(max_length=5000)
     # Date post was created
@@ -25,7 +25,9 @@ class Profile(models.Model):
         "self", related_name="followed_by", symmetrical=False, blank=True
     )
     date_modified = models.DateTimeField(User, auto_now=True)
-
+    bio = models.CharField(max_length=250, default="")
+    picture = models.CharField(max_length=500, default="images/pf_default.jpg")
+    light_mode = models.BooleanField(default=True)
     def __str__(self):
         return self.user.username
 
