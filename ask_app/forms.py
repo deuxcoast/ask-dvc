@@ -6,17 +6,17 @@ from .models import Post
 
 
 class PostForm(forms.Form):
-    body = forms.CharField(
-        required=True,
-        widget=forms.widgets.Textarea(
-            attrs={"placeholder": "What are you wondering?", "class": "form-control"}
-        ),
-        label="",
-    )
-
-    class Meta:
-        model = Post
-        exclude = ("user",)
+    # body = forms.CharField(
+    #     required=True,
+    #     widget=forms.widgets.Textarea(
+    #         attrs={"placeholder": "What are you wondering?", "class": "form-control"}
+    #     ),
+    #     label="",
+    # )
+    #
+    # class Meta:
+    #     model = Post
+    #     exclude = ("user",)
 
 
 class SignUpForm(UserCreationForm):

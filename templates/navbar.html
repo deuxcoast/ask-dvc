@@ -53,7 +53,6 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!--<div class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">-->
                 <div class="navbar-nav me-auto mb-2 mb-lg-0">
                     <form class="d-flex" role="search">
                         <input class="form-control me-2"
@@ -63,9 +62,9 @@
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                 </div>
-                <div class="d-flex ms-auto">
+                <div class="d-flex align-items-center ms-auto">
                     {% if user.is_authenticated %}
-                        <div>
+                        <div class="me-3">
                             <a type="button" class="btn btn-primary" href="#">New Post</a>
                         </div>
                         <div class="dropdown text-end">
@@ -79,7 +78,7 @@
                                      height="32"
                                      class="rounded-circle">
                             </a>
-                            <ul class="dropdown-menu text-small" style="">
+                            <ul class="dropdown-menu text-small">
                                 <li>
                                     <a class="dropdown-item" href="#">Settings</a>
                                 </li>
@@ -103,5 +102,3 @@
                 </div>
             </div>
         </div>
-    </nav>
-</div>
