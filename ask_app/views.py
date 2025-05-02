@@ -1,11 +1,12 @@
 from django import forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import PostForm, SignUpForm
+from .forms import CommentCreateForm, PostForm, SignUpForm
 from .models import Post, Profile
 
 
@@ -21,6 +22,9 @@ def index(request):
                 meep.save()
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
+
+        posts = Post.objects.all().order_by("-created_at")
+        return render(request, "index.html", {"posts": posts})
 
     else:
         posts = Post.objects.all().order_by("-created_at")
@@ -129,5 +133,25 @@ def post(request):
         return render(request, "post.html", {"posts": posts, "form": form})
 
 
-def post_view(request):
-    return render(request, "post_view.html", {})
+def post_page(request, pk):
+    post = get_object_or_404(Post, id=pk)
+
+    comment_form = CommentCreateForm()
+
+    context = {"post": post, "comment_form": comment_form}
+    return render(request, "post_page.html", context)
+
+
+@login_required
+def comment_sent(request, pk):
+    post = get_object_or_404(Post, id=pk)
+
+    if request.method == "POST":
+        form = CommentCreateForm(request.POST)
+        if form.is_valid:
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.parent_post = post
+            comment.save()
+
+    return redirect("post_page", post.id)
