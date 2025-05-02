@@ -1,30 +1,32 @@
 from django import forms
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import PostForm, SignUpForm
+from .forms import CommentCreateForm, PostForm, SignUpForm
 from .models import Post, Profile
+
 
 # displays all posts on index (home) page
 def index(request):
-    # if request.user.is_authenticated:
-    #     form = PostForm(request.POST or None)
+    if request.user.is_authenticated:
+        form = PostForm(request.POST or None)
 
-    #     # if request.method == "POST":
-    #     #     if form.is_valid():
-    #     #         post = form.save(commit=False)
-    #     #         post.user = request.user
-    #     #         post.save()
-    #     #         messages.success(request, "Your post was successful.")
-    #     #         return redirect("index")
+        if request.method == "POST":
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.user = request.user
+                meep.save()
+                messages.success(request, "Your post was successful.")
+                return redirect("index")
 
-    #     # posts = Post.objects.all().order_by("-created_at")
-    #     # return render(request, "index.html", {"posts": posts, "form": form})
+        posts = Post.objects.all().order_by("-created_at")
+        return render(request, "index.html", {"posts": posts})
 
-    # else:
+    else:
         posts = Post.objects.all().order_by("-created_at")
         return render(request, "index.html", {"posts": posts})
 
@@ -113,6 +115,7 @@ def signup_user(request):
 
     return render(request, "sign_up.html", {"form": form})
 
+
 def post(request):
     # if the user is logged in, allow them to post
     if request.user.is_authenticated:
@@ -129,6 +132,26 @@ def post(request):
         posts = Post.objects.all().order_by("-created_at")
         return render(request, "post.html", {"posts": posts, "form": form})
 
-    # else:
-    #     posts = Post.objects.all().order_by("-created_at")
-    #     return render(request, "index.html", {"posts": posts})
+
+def post_page(request, pk):
+    post = get_object_or_404(Post, id=pk)
+
+    comment_form = CommentCreateForm()
+
+    context = {"post": post, "comment_form": comment_form}
+    return render(request, "post_page.html", context)
+
+
+@login_required
+def comment_sent(request, pk):
+    post = get_object_or_404(Post, id=pk)
+
+    if request.method == "POST":
+        form = CommentCreateForm(request.POST)
+        if form.is_valid:
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.parent_post = post
+            comment.save()
+
+    return redirect("post_page", post.id)
