@@ -35,7 +35,7 @@ Github: [@deuxcoast](https://github.com/deuxcoast)
 
 Github: [@jayracher](https://github.com/jayracher)
 
-#### Karen
+#### Karen Zhao
 
 Github: [@karen2zhao](https://github.com/karen2zhao)
 
