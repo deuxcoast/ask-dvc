@@ -1,6 +1,6 @@
 {% load static %}
 <div class="container">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'index' %}">askDVC</a>
             <button class="navbar-toggler"
@@ -13,13 +13,13 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                <div class="mx-auto w-50">
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2"
+                        <input class="form-control me-sm-2"
                                type="search"
                                placeholder="Search"
                                aria-label="Search" />
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                     </form>
                 </div>
                 <div class="d-flex align-items-center ms-auto">
@@ -43,7 +43,8 @@
                                     <a class="dropdown-item" href="#">Settings</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a>
+                                    <a class="dropdown-item"
+                                       href="{% url 'profile' request.user.username %}">Profile</a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -54,10 +55,8 @@
                             </ul>
                         </div>
                     {% else %}
-                        <a type="button"
-                           class="btn btn-outline-primary me-2"
-                           href="{% url 'login' %}">Login</a>
-                        <a type="button" class="btn btn-primary" href="{% url 'signup' %}">Sign Up</a>
+                        <a type="button" class="btn btn-success me-2" href="{% url 'login' %}">Login</a>
+                        <a type="button" class="btn btn-success" href="{% url 'signup' %}">Sign Up</a>
                     {% endif %}
                 </div>
             </div>

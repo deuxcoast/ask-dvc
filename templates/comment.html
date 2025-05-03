@@ -1,0 +1,55 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<div class="card py-4 px-2 my-2">
+    <div class="d-flex flex-start">
+        <a class="text-decoration-none"
+           href="{% url 'profile' comment.author.username %}">
+            <img class="rounded-circle shadow-1-strong me-3"
+                 src="{% static "images/pf_default.jpg" %}"
+                 alt="avatar"
+                 width="65"
+                 height="65" />
+        </a>
+        <div class="flex-grow-1 flex-shrink-1">
+            <div class="">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <a class="text-decoration-none"
+                           href="{% url 'profile' comment.author.username %}">
+                            <p class="mb-1">
+                            {{ comment.author.username }}</a>
+                            -
+                            <span class="small">2 hours ago</span>
+                        </p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center text-decoration-none">
+                        {% if user.is_authenticated and comment.author == user %}
+                            <a class="px-2 text-decoration-none"
+                               href="{% url 'comment_delete' comment.id %}"><span class="small link-danger">Delete</span></a>
+                        {% endif %}
+                        <a id="showFormButton-{{ comment.id }}"
+                           class="px-2 text-decoration-none"
+                           href="#!"><span class="small ">Reply</span></a>
+                    </div>
+                </div>
+                <p class="small mb-0">{{ comment.body }}</p>
+            </div>
+            <div id="replyContainer-{{ comment.id }}"
+                 class="py-4"
+                 style="display: none">
+                <form method="POST" action="{% url 'reply_sent' comment.id %}">
+                    {% csrf_token %}
+                    {% crispy reply_form %}
+                </form>
+            </div>
+            {% for reply in comment.replies.all %}
+                {% include 'reply.html' %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+	document.getElementById('showFormButton-{{ comment.id }}').addEventListener('click', function() {
+		document.getElementById('replyContainer-{{ comment.id }}').style.display = 'block';
+        });
+</script>

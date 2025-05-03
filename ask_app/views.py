@@ -6,8 +6,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import CommentCreateForm, PostForm, SignUpForm
-from .models import Post, Profile
+from .forms import CommentCreateForm, PostForm, ReplyCreateForm, SignUpForm
+from .models import Comment, Post, Profile, Reply
 
 
 # displays all posts on index (home) page
@@ -139,8 +139,9 @@ def post_page(request, pk):
     post = get_object_or_404(Post, id=pk)
 
     comment_form = CommentCreateForm()
+    reply_form = ReplyCreateForm()
 
-    context = {"post": post, "comment_form": comment_form}
+    context = {"post": post, "comment_form": comment_form, "reply_form": reply_form}
     return render(request, "post_page.html", context)
 
 
@@ -157,3 +158,31 @@ def comment_sent(request, pk):
             comment.save()
 
     return redirect("post_page", post.id)
+
+
+@login_required
+def comment_delete(request, pk):
+    comment = get_object_or_404(Comment, id=pk)
+
+    if request.method == "POST":
+        comment.delete()
+        messages.success(request, "Comment deleted.")
+
+        return redirect("post_page", comment.parent_post.id)
+
+    return render(request, "comment_delete.html", {"comment": comment})
+
+
+@login_required
+def reply_sent(request, pk):
+    comment = get_object_or_404(Comment, id=pk)
+
+    if request.method == "POST":
+        form = ReplyCreateForm(request.POST)
+        if form.is_valid:
+            reply = form.save(commit=False)
+            reply.author = request.user
+            reply.parent_comment = comment
+            reply.save()
+
+    return redirect("post_page", comment.parent_post_id)
