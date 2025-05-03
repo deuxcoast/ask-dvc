@@ -1,9 +1,17 @@
 # askDVC
 
-askDVC is a website for students to ask questions, provide answers and make life a
-little easier for each other. The idea is to have a central place where students
-can come to ask questions about their classes,teachers, and life as a student at
-large.
+# Table of Contents
+
+1. [Overview](#overview)
+2. [Project Background](#background)
+3. [Contributor Guide](#contributors)
+
+# Overview <a name="overview"></a>
+
+**askDVC** is a website for students to ask questions, provide answers and, make
+life a little easier for each other. The idea is to have a central place where
+students can come to ask questions about their classes, teachers, and life as a
+student at large.
 
 ![askDVC Homepage](./resources/homepage.png)
 
@@ -16,10 +24,20 @@ pooled, and student's can share their experiences.
 
 ---
 
+# Project Background <a name="background"></a>
+
 <img src="./resources/project-bracket-logo.png" width=25% height=25% > </img>
 
-askDVC was built over 4 weeks as part of Project Bracket at Diablo Valley
-College.
+askDVC was built over 4 weeks in the Spring of 2025 as part of
+[Project Bracket](https://projectbracket.webflow.io/) at Diablo Valley College.
+
+## Tech Stack
+
+- [Django](https://www.djangoproject.com/): The project is written in Python
+  using the Django web framework.
+
+- [Bootstrap](https://getbootstrap.com): The UI is built with the Bootstrap
+  toolkit, with theming provided by [Bootswatch](https://bootswatch.com/).
 
 ## Team Members
 
@@ -45,13 +63,15 @@ Github: [@mattag1234](https://github.com/mattag1234)
 
 ---
 
-### Instructions for setting up the project
+# Contributor Guide <a name="contributors"></a>
+
+## Instructions for setting up the project
 
 **All of these commands should be run from a terminal in the base directory of
 the project**. After cloning the project, we should `cd` into the repository.
 
 > [!WARNING]
-> These commands are for zsh/bsh shells, which should work for most Mac OS and
+> These commands are for zsh/bsh shells, which should work for most MacOS and
 > Linux users. For Windows users the commands below may be different.
 
 1. Clone the project. To do this, `cd` into the directory you want the project
