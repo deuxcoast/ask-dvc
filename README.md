@@ -16,10 +16,15 @@ pooled, and student's can share their experiences.
 
 ---
 
+# Project Background
+
 <img src="./resources/project-bracket-logo.png" width=25% height=25% > </img>
 
 askDVC was built over 4 weeks in the Spring of 2025 as part of
 [Project Bracket](https://projectbracket.webflow.io/) at Diablo Valley College.
+The project is written in Python using the [Django](https://www.djangoproject.com/)
+web framework. The UI is built with the [Bootstrap](https://getbootstrap.com)
+toolkit, and the Brite theme from [Bootswatch](https://bootswatch.com/).
 
 ## Team Members
 
@@ -51,7 +56,7 @@ Github: [@mattag1234](https://github.com/mattag1234)
 the project**. After cloning the project, we should `cd` into the repository.
 
 > [!WARNING]
-> These commands are for zsh/bsh shells, which should work for most Mac OS and
+> These commands are for zsh/bsh shells, which should work for most MacOS and
 > Linux users. For Windows users the commands below may be different.
 
 1. Clone the project. To do this, `cd` into the directory you want the project
