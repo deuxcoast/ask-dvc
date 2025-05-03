@@ -65,7 +65,7 @@ Github: [@mattag1234](https://github.com/mattag1234)
 
 # Contributor Guide <a name="contributors"></a>
 
-### Instructions for setting up the project
+## Instructions for setting up the project
 
 **All of these commands should be run from a terminal in the base directory of
 the project**. After cloning the project, we should `cd` into the repository.
