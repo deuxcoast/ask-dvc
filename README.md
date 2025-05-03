@@ -1,6 +1,6 @@
 # askDVC
 
-askDVC is a website for students to ask questions, provide answers and make life a
+**askDVC** is a website for students to ask questions, provide answers and make life a
 little easier for each other. The idea is to have a central place where students
 can come to ask questions about their classes,teachers, and life as a student at
 large.
