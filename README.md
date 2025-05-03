@@ -1,6 +1,6 @@
 # askDVC
 
-askDVC is a place for students to ask questions, provide answers and make life a
+askDVC is a website for students to ask questions, provide answers and make life a
 little easier for each other. The idea is to have a central place where students
 can come to ask questions about their classes,teachers, and life as a student at
 large.
@@ -16,17 +16,18 @@ pooled, and student's can share their experiences.
 
 ---
 
+<img src="./resources/project-bracket-logo.png" width=25% height=25% > </img>
+
 askDVC was built over 4 weeks as part of Project Bracket at Diablo Valley
 College.
 
-<img src="./resources/project-bracket-logo.png" width=25% height=25%>
 ## Team Members
 
 #### Aanya
 
 Github: [@FlyHighStem](https://github.com/FlyHighStem)
 
-#### Conor
+#### Conor Ney
 
 Github: [@deuxcoast](https://github.com/deuxcoast)
 
