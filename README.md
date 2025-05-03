@@ -19,29 +19,28 @@ pooled, and student's can share their experiences.
 askDVC was built over 4 weeks as part of Project Bracket at Diablo Valley
 College.
 
-![Project Bracket logo](./resources/project-bracket-logo.png | width=150)
-
+<img src="./resources/project-bracket-logo.png" width=25% height=25%>
 ## Team Members
 
 #### Aanya
 
-Github: (@FlyHighStem)[https://github.com/FlyHighStem]
+Github: [@FlyHighStem](https://github.com/FlyHighStem)
 
 #### Conor
 
-Github: (@deuxcoast)[https://github.com/deuxcoast]
+Github: [@deuxcoast](https://github.com/deuxcoast)
 
 #### Jordan
 
-Github: (@jayracher)[https://github.com/jayracher]
+Github: [@jayracher](https://github.com/jayracher)
 
 #### Karen
 
-Github: (@karen2zhao)[https://github.com/karen2zhao]
+Github: [@karen2zhao](https://github.com/karen2zhao)
 
 #### Matthew
 
-Github: (@mattag1234)[https://github.com/mattag1234]
+Github: [@mattag1234](https://github.com/mattag1234)
 
 ---
 
@@ -50,7 +49,7 @@ Github: (@mattag1234)[https://github.com/mattag1234]
 **All of these commands should be run from a terminal in the base directory of
 the project**. After cloning the project, we should `cd` into the repository.
 
-> [!NOTE]
+> [!WARNING]
 > These commands are for zsh/bsh shells, which should work for most Mac OS and
 > Linux users. For Windows users the commands below may be different.
 
