@@ -26,7 +26,7 @@ pooled, and student's can share their experiences.
 
 # Project Background <a name="background"></a>
 
-<img src="./resources/project-bracket-logo.png" width=25% height=25% > </img>
+<img src="./resources/bracket-logo.png" width=25% height=25% > </img>
 
 askDVC was built over 4 weeks in the Spring of 2025 as part of
 [Project Bracket](https://projectbracket.webflow.io/) at Diablo Valley College.
