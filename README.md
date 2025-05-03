@@ -30,9 +30,14 @@ pooled, and student's can share their experiences.
 
 askDVC was built over 4 weeks in the Spring of 2025 as part of
 [Project Bracket](https://projectbracket.webflow.io/) at Diablo Valley College.
-The project is written in Python using the [Django](https://www.djangoproject.com/)
-web framework. The UI is built with the [Bootstrap](https://getbootstrap.com)
-toolkit, and the Brite theme from [Bootswatch](https://bootswatch.com/).
+
+## Tech Stack
+
+- [Django](https://www.djangoproject.com/): The project is written in Python
+  using the Django web framework.
+
+- [Bootstrap](https://getbootstrap.com): The UI is built with the Bootstrap
+  toolkit, with theming provided by [Bootswatch](https://bootswatch.com/).
 
 ## Team Members
 
