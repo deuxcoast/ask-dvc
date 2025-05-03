@@ -1,5 +1,13 @@
 # askDVC
 
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Project Background](#background)
+3. [Contributor Guide](#contributors)
+
+# Overview <a name="overview"></a>
+
 **askDVC** is a website for students to ask questions, provide answers and, make
 life a little easier for each other. The idea is to have a central place where
 students can come to ask questions about their classes, teachers, and life as a
@@ -16,7 +24,7 @@ pooled, and student's can share their experiences.
 
 ---
 
-# Project Background
+# Project Background <a name="background"></a>
 
 <img src="./resources/project-bracket-logo.png" width=25% height=25% > </img>
 
@@ -49,6 +57,8 @@ Github: [@karen2zhao](https://github.com/karen2zhao)
 Github: [@mattag1234](https://github.com/mattag1234)
 
 ---
+
+# Contributor Guide <a name="contributors"></a>
 
 ### Instructions for setting up the project
 
