@@ -3,7 +3,9 @@
 {% block content %}
     <div class="container">
         <h1>{{ post.title }}</h1>
-        <p class="text-body-secondary">@{{ post.user }}</p>
+        <a href={% url 'profile' post.user %}
+            <p class="text-body-secondary">@{{ post.user }}</p>
+        </a>
         <p>{{ post.body }}</p>
         <!--<div class="media-block pad-all">-->
         <form method="POST" action="{% url 'comment_sent' post.id %}">
@@ -23,7 +25,7 @@
                                 <div class="col">
                                     {% for comment in post.comments.all %}
                                         <div class="d-flex flex-start">
-                                            <a href="{% url 'profile' comment.author.id %}">
+                                            <a href="{% url 'profile' comment.author.username %}">
                                                 <img class="rounded-circle shadow-1-strong me-3"
                                                      src="{% static "images/pf_default.jpg" %}"
                                                      alt="avatar"
@@ -33,10 +35,12 @@
                                             <div class="flex-grow-1 flex-shrink-1">
                                                 <div>
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <a href="{% url 'profile' comment.author.id %}">
-                                                            <p class="mb-1">
-                                                                {{ comment.author.username }}<span class="small">- 2 hours ago</span>
-                                                            </p>
+                                                        <div>
+                                                            <a href="{% url 'profile' comment.author.username %}">
+                                                                <p class="mb-1">
+                                                                    {{ comment.author.username }}</a><span class="small">2 hours ago</span>
+                                                                </p>
+                                                            </div>
                                                             <a href="#!"><i class="fas fa-reply fa-xs"></i><span class="small">reply</span></a>
                                                         </div>
                                                         <p class="small mb-0">{{ comment.body }}</p>

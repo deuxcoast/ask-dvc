@@ -40,10 +40,12 @@ def profile_list(request):
         return redirect("index")
 
 
-def profile(request, pk):
+def profile(request, username):
     if request.user.is_authenticated:
-        profile = Profile.objects.get(user_id=pk)
-        posts = Post.objects.filter(user_id=pk)
+        user = get_object_or_404(User, username=username)
+        profile = get_object_or_404(Profile, user=user)
+        posts = user.posts.all()
+        # posts = Post.objects.filter(user=user)
 
         # Post form logic
         if request.method == "POST":
