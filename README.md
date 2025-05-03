@@ -1,12 +1,61 @@
-# ask-dvc
+# askDVC
 
-### commands for setting up the project
+askDVC is a place for students to ask questions, provide answers and make life a
+little easier for each other. The idea is to have a central place where students
+can come to ask questions about their classes,teachers, and life as a student at
+large.
 
-**All of these commands should be run from the base directory of the
-project**. So after cloning the project, we should `cd` into the repository.
+![askDVC Homepage](./resources/homepage.png)
 
-1. Clone the project. `cd` into the directory you want the project to be
-   stored in, then run the following command:
+Whether it's questions about which professor to take, how manageable 20
+credits in a semester is, where the best place on campus to study is, or
+advice on making friends - askDVC aims to create a place where knowledge is
+pooled, and student's can share their experiences.
+
+[!askDVC post example](./resources/post.png)
+
+---
+
+askDVC was built over 4 weeks as part of Project Bracket at Diablo Valley
+College.
+
+![Project Bracket logo](./resources/project-bracket-logo.png)
+
+## Team Members
+
+#### Aanya
+
+Github: (@FlyHighStem)[https://github.com/FlyHighStem]
+
+#### Conor
+
+Github: (@deuxcoast)[https://github.com/deuxcoast]
+
+#### Jordan
+
+Github: (@jayracher)[https://github.com/jayracher]
+
+#### Karen
+
+Github: (@karen2zhao)[https://github.com/karen2zhao]
+
+#### Matthew
+
+Github: (@mattag1234)[https://github.com/mattag1234]
+
+---
+
+### Instructions for setting up the project
+
+**All of these commands should be run from a terminal in the base directory of
+the project**. After cloning the project, we should `cd` into the repository.
+
+[!NOTE]
+These commands are for zsh/bsh shells, which should work for most Mac OS and
+Linux users. For Windows users the commands below may be different.
+
+1. Clone the project. To do this, `cd` into the directory you want the project
+   to be stored in, then run the following command:
 
    `git clone https://github.com/deuxcoast/ask-dvc.git`
 
