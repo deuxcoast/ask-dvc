@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import CommentCreateForm, PostForm, ReplyCreateForm, SignUpForm
@@ -186,3 +187,27 @@ def reply_sent(request, pk):
             reply.save()
 
     return redirect("post_page", comment.parent_post_id)
+
+
+def search(request):
+    if request.method == "POST":
+
+        # Get input from the search form
+        search_term = request.POST["search"]
+
+        # Search database for posts matching the search term
+        # We use the Q object to allow us to search across both the title and
+        # body columns.
+
+        # This will eventually become a bottleneck. The two main solutions are
+        # to switch to a more feature-full db like Postgres that allows full-text
+        # search, or use a search-specific product like ElasticSearch
+        post_results = Post.objects.filter(
+            Q(title__icontains=search_term) | Q(body__icontains=search_term)
+        )
+
+        return render(
+            request,
+            "search_results.html",
+            {"search": search, "post_results": post_results},
+        )

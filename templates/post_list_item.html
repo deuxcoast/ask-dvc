@@ -1,0 +1,14 @@
+{% block content %}
+    <div class="card">
+        <h5 class="card-header list-group-item-success">
+            <a class="text-decoration-none" href="{% url 'post_page' post.id %}">{{ post.title }}</a>
+        </h5>
+        <div class="card-body">
+            <a class="text-decoration-none"
+               href="{% url 'profile' post.user.username %}">
+                <p class="card-title">@{{ post.user.username }}</p>
+            </a>
+            <p class="card-text">{{ post.body }}</p>
+        </div>
+    </div>
+{% endblock %}

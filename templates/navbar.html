@@ -18,10 +18,11 @@
              id="navbarContent">
             <!-- Centered Search Form -->
             <div class="mx-auto w-50">
-                <form class="d-flex" method="GET" action="">
+                <form class="d-flex" method="POST" action="{% url 'search' %}">
+                    {% csrf_token %}
                     <input class="form-control me-2"
                            type="search"
-                           name="q"
+                           name="search"
                            placeholder="Search"
                            aria-label="Search">
                     <button class="btn btn-light" type="submit">Search</button>
