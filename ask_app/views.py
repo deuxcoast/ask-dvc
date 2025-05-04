@@ -115,7 +115,6 @@ def signup_user(request):
 
     return render(request, "sign_up.html", {"form": form})
 
-
 def post(request):
     # if the user is logged in, allow them to post
     if request.user.is_authenticated:
@@ -131,7 +130,6 @@ def post(request):
 
         posts = Post.objects.all().order_by("-created_at")
         return render(request, "post.html", {"posts": posts, "form": form})
-
 
 def post_page(request, pk):
     post = get_object_or_404(Post, id=pk)

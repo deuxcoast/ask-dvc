@@ -30,7 +30,6 @@ class Profile(models.Model):
     bio = models.CharField(max_length=250, default="")
     picture = models.CharField(max_length=500, default="")
     dark_mode = models.BooleanField(default=False)
-
     def __str__(self):
         return self.user.username
 
@@ -45,7 +44,6 @@ def create_profile(sender, instance, created, **kwargs):
         user_profile.save()
         # Have the user follow themselves
         user_profile.follows.set([instance.profile.id])
-
 
 post_save.connect(create_profile, sender=User)
 
