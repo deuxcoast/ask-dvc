@@ -27,9 +27,15 @@ class Profile(models.Model):
         "self", related_name="followed_by", symmetrical=False, blank=True
     )
     date_modified = models.DateTimeField(User, auto_now=True)
+    bio = models.CharField(max_length=250, default="")
+    picture = models.CharField(max_length=500, default="")
+    dark_mode = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
+
+    def get_profile_picture(self):
+        return self.picture if self.picture else "/static/images/pf_default.jpg"
 
 
 # Create a Profile when new user signs up

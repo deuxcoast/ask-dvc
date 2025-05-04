@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Comment, Post
+from .models import Comment, Post, Profile
 
 
 class PostForm(forms.ModelForm):
@@ -84,3 +84,46 @@ class CommentCreateForm(forms.ModelForm):
         fields = ["body"]
         widgets = {"body": forms.TextInput(attrs={"placeholder": "Add comment..."})}
         labels = {"body": ""}
+
+class ProfileSettingsForm(forms.ModelForm):
+    picture = forms.ImageField(
+        required=True,
+        widget=forms.FileInput(
+            attrs={"accept": "image/*", "class": "form-control"}
+        ),
+        label="Profile Picture",
+    )
+    username = forms.CharField(
+        required=True,
+        widget=forms.Textarea(
+            attrs={"class": "form-control"}
+        ),
+        label="Username",
+    )
+    bio = forms.CharField(
+        required=True,
+        widget=forms.Textarea(
+            attrs={"class": "form-control"}
+        ),
+        label="Bio",
+    )
+    dark_mode = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={"class": "form-check-input"}
+        ),
+        label="Color Theme",
+    )
+
+    class Meta:
+        model = Profile
+        fields = ["picture", "bio", "dark_mode"]  # Removed 'username' because it's part of the User model
+        exclude = ("user",)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.user:
+            self.fields["username"].widget.attrs["placeholder"] = self.instance.user.username
+            self.fields["bio"].widget.attrs["placeholder"] = self.instance.bio
+            self.fields["picture"].widget.attrs["placeholder"] = self.instance.picture
+            self.fields["dark_mode"].widget.attrs["placeholder"] = str(self.instance.dark_mode)

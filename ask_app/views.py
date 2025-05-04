@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import CommentCreateForm, PostForm, SignUpForm
+from .forms import CommentCreateForm, PostForm, SignUpForm, ProfileSettingsForm
 from .models import Post, Profile
 
 
@@ -19,7 +19,7 @@ def index(request):
             if form.is_valid():
                 post = form.save(commit=False)
                 post.user = request.user
-                meep.save()
+                post.save()
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
 
@@ -155,3 +155,29 @@ def comment_sent(request, pk):
             comment.save()
 
     return redirect("post_page", post.id)
+
+def profile_settings(request, pk):
+    if request.user.is_authenticated:
+        profile = get_object_or_404(Profile, user_id=pk)
+
+        # Pass the profile instance to the template
+        return render(request, 'settings.html', {'profile': profile})
+
+    # Redirect to login page if user is not authenticated
+    return redirect('login')
+
+def edit_profile_settings(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    profile = get_object_or_404(Profile, user_id=pk)
+
+    if request.method == "POST":
+        form = ProfileSettingsForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_settings', pk=pk)  # Redirect after saving
+    else:
+        form = ProfileSettingsForm(instance=profile)
+
+    return render(request, 'settings_edit.html', {'form': form, 'profile': profile})

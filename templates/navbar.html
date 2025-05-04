@@ -40,7 +40,7 @@
                             </a>
                             <ul class="dropdown-menu text-small">
                                 <li>
-                                    <a class="dropdown-item" href="#">Settings</a>
+                                    <a class="dropdown-item" href="{% url 'profile_settings' request.user.id %}">Settings</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a>

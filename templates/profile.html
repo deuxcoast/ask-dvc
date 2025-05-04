@@ -59,6 +59,8 @@
                                     value="follow"
                                     type="submit">Follow @{{ profile.user.username }}</button>
                         {% endif %}
+                        <a href="{% url 'profile_settings' request.user.id %}"
+                        class="btn btn-outline-primary">Go to Profile Settings</a>
                     </form>
                 </div>
             </div>
