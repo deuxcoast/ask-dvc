@@ -5,9 +5,9 @@
         </h5>
         <div class="card-body">
             <a class="link-style" href="{% url 'profile' post.user.username %}">
-                <p class="card-title">@{{ post.user.username }}</p>
+                <p class="card-title link-style">@{{ post.user.username }}</p>
             </a>
-            <p class="card-text">{{ post.body }}</p>
+            <p class="card-text">{{ post.body|truncatechars:300 }}</p>
         </div>
     </div>
 {% endblock %}

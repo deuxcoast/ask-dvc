@@ -215,5 +215,5 @@ def search(request):
         return render(
             request,
             "search_results.html",
-            {"search": search, "post_results": post_results},
+            {"search_term": search_term, "post_results": post_results},
         )

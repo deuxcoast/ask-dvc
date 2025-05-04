@@ -1,36 +1,55 @@
 {% load static %}
 {% load crispy_forms_tags %}
-<div class="card py-4 px-2 my-2">
-    <div class="d-flex flex-start">
-        <a class="link-style" href="{% url 'profile' comment.author.username %}">
-            <img class="rounded-circle shadow-1-strong me-3"
-                 src="{% static "images/pf_default.jpg" %}"
-                 alt="avatar"
-                 width="65"
-                 height="65" />
-        </a>
-        <div class="flex-grow-1 flex-shrink-1">
-            <div class="">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <a class="link-style" href="{% url 'profile' comment.author.username %}">
-                            <p class="mb-1">
-                            {{ comment.author.username }}</a>
-                            -
-                            <span class="small">2 hours ago</span>
-                        </p>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center link-style">
-                        {% if user.is_authenticated and comment.author == user %}
-                            <a class="px-2 link-style" href="{% url 'comment_delete' comment.id %}"><span class="small link-danger">Delete</span></a>
-                        {% endif %}
-                        <a id="showFormButton-{{ comment.id }}"
-                           class="px-2 link-style"
-                           href="#!"><span class="small ">Reply</span></a>
-                    </div>
+<head>
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}"
+          rel="stylesheet"
+          type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}"
+          rel="stylesheet"
+          type="text/css">
+</head>
+<div class="d-flex flex-start">
+    <a class="link-style" href="{% url 'profile' comment.author.username %}">
+        <img class="rounded-circle shadow-1-strong me-3"
+             src="{% static "images/pf_default.jpg" %}"
+             alt="avatar"
+             width="50"
+             height="50" />
+    </a>
+    <div class="flex-grow-1 flex-shrink-1">
+        <div class="">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <a class="link-style" href="{% url 'profile' comment.author.username %}">
+                        <p class="mb-1">
+                        {{ comment.author.username }}</a>
+                        -
+                        <span class="">2 hours ago</span>
+                    </p>
                 </div>
-                <p class="small mb-0">{{ comment.body }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    {% if user.is_authenticated and comment.author == user %}
+                        <span class="d-flex align-items-center comment-icon negative-icon">
+                            <a class="text-decoration-none"
+                               href="{% url 'comment_delete' comment.id %}">
+                                <i class="fa-solid fa-trash negative-icon comment-icon"></i>
+                            </a>
+                        </span>
+                    {% endif %}
+                </div>
             </div>
+            <p class="mb-0">{{ comment.body }}</p>
+        </div>
+        <div class="d-flex align-items-center py-2 px-2 gap-4 icon-bar">
+            <i class="fa-solid fa-up-long comment-icon positive-icon"></i>
+            <i class="fa-solid fa-down-long comment-icon negative-icon"></i>
+            <span id="showFormButton-{{ comment.id }}"
+                  class="d-flex align-items-center comment-icon reply-icon">
+                <i class="fa-solid fa-comment-dots me-1"></i>
+                <span>Reply</span>
+            </span>
+        </div>
+        {% if reply_form %}
             <div id="replyContainer-{{ comment.id }}"
                  class="py-4"
                  style="display: none">
@@ -39,10 +58,10 @@
                     {% crispy reply_form %}
                 </form>
             </div>
-            {% for reply in comment.replies.all %}
-                {% include 'reply.html' %}
-            {% endfor %}
-        </div>
+        {% endif %}
+        {% for reply in comment.replies.all %}
+            {% include 'reply.html' %}
+        {% endfor %}
     </div>
 </div>
 <script>

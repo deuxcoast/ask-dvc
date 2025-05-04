@@ -5,15 +5,15 @@
         <img class="rounded-circle shadow-1-strong me-3"
              src="{% static "images/pf_default.jpg" %}"
              alt="avatar"
-             width="65"
-             height="65" />
+             width="50"
+             height="50" />
     </a>
     <div class="flex-grow-1 flex-shrink-1">
         <div class="d-flex justify-content-between align-items-center w-100">
             <p class="mb-1 mb-0">
                 <a class="link-style" href="{% url 'profile' reply.author.username %}">{{ reply.author.username }}</a>
                 -
-                <span class="small">2 hours ago</span>
+                <span class="">2 hours ago</span>
             </p>
             <div class="d-flex gap-2 mx-2">
                 {% if user.is_authenticated and reply.author == user %}
@@ -26,7 +26,7 @@
                 </a>
             </div>
         </div>
-        <p class="small mb-0">{{ reply.body }}</p>
+        <p class="mb-0">{{ reply.body }}</p>
     </div>
 </div>
 <!--</div>-->
