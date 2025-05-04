@@ -2,12 +2,9 @@
 {% block content %}
     <div style="grid-template-columns: 1fr" class="d-grid gap-3">
         {% for post in posts %}
-            <div style="grid-template-columns: 1fr" class="d-grid gap-3">
-                {% for post in posts %}
-                    {% include 'post_list_item.html' %}
-                {% endfor %}
-            </div>
+            {% include 'post_list_item.html' %}
         {% endfor %}
     </div>
-    <div class="col-4"></div>
+</div>
+<div class="col-4"></div>
 {% endblock %}

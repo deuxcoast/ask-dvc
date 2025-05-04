@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -24,8 +25,13 @@ def index(request):
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
 
-        posts = Post.objects.all().order_by("-created_at")
-        return render(request, "index.html", {"posts": posts})
+        posts = Post.objects.order_by("-created_at")
+        page_number = request.GET.get("page", 1)
+        paginator = Paginator(posts, 10)
+
+        page_obj = paginator.get_page(page_number)
+
+        return render(request, "index.html", {"posts": page_obj})
 
     else:
         posts = Post.objects.all().order_by("-created_at")
