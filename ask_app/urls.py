@@ -14,4 +14,5 @@ urlpatterns = [
     path("comment/sent/<pk>", views.comment_sent, name="comment_sent"),
     path("comment/delete/<pk>", views.comment_delete, name="comment_delete"),
     path("reply/sent/<pk>", views.reply_sent, name="reply_sent"),
+    path("search/", views.search, name="search"),
 ]

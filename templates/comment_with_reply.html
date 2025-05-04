@@ -1,0 +1,24 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!--<div class="card py-4 px-2 my-2">-->
+<div class="card py-4 px-2 my-2">
+    <div class="d-flex flex-start">
+        {% include 'comment.html' %}
+        <div id="replyContainer-{{ comment.id }}"
+             class="py-4"
+             style="display: none">
+            <form method="POST" action="{% url 'reply_sent' comment.id %}">
+                {% csrf_token %}
+                {% crispy reply_form %}
+            </form>
+            {% for reply in comment.replies.all %}
+                {% include 'comment.html' with comment=reply %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+	document.getElementById('showFormButton-{{ comment.id }}').addEventListener('click', function() {
+		document.getElementById('replyContainer-{{ comment.id }}').style.display = 'block';
+        });
+</script>

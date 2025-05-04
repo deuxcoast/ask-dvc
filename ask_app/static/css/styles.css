@@ -1,0 +1,46 @@
+/* This is for making links appear like normal text, but have an underline
+ * when the users hovers over them */
+.link-style {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-style:hover {
+  text-decoration: underline;
+}
+
+/* This makes only the bottom of the navbar have a border */
+.navbar-border-bottom-only {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 2px solid black !important;
+}
+
+.comment-icon {
+  cursor: pointer;
+  transition: color 0.2s ease;
+  color: #6c757d; /* Bootstrap secondary text color */
+  display: inline-flex;
+  align-items: center;
+}
+
+.negative-icon:hover {
+  color: #f56565;
+}
+
+.positive:hover {
+  color: #68d391;
+}
+
+.reply-icon span {
+  font-size: 0.9rem;
+}
+
+.reply-icon:hover {
+  color: #0d6efd; /* Bootstrap primary color */
+}
+
+.icon-bar {
+  gap: 1.5rem;
+}

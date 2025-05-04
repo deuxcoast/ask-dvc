@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "ask_app",
     "crispy_forms",
     "crispy_bootstrap4",
+    "fontawesomefree",
 ]
 
 MIDDLEWARE = [
