@@ -10,10 +10,14 @@
         <p>{{ post.body }}</p>
         <!--<div class="media-block pad-all">-->
         <div class="py-4">
-            <form method="POST" action="{% url 'comment_sent' post.id %}">
-                {% csrf_token %}
-                {% crispy comment_form %}
-            </form>
+            {% if user.is_authenticated %}
+                <form method="POST" action="{% url 'comment_sent' post.id %}">
+                    {% csrf_token %}
+                    {% crispy comment_form %}
+                </form>
+            {% else %}
+                <a class="text-decoration-none" href="{% url 'login' %}">Login</a> to comment.
+            {% endif %}
         </div>
         <div class="container">
             <div class="row d-flex justify-content-center">
