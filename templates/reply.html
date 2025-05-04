@@ -1,8 +1,7 @@
 {% load static %}
 <hr class="" />
 <div class="d-flex flex-start mt-4">
-    <a class="text-decoration-none"
-       href="{% url 'profile' comment.author.username %}">
+    <a class="link-style" href="{% url 'profile' comment.author.username %}">
         <img class="rounded-circle shadow-1-strong me-3"
              src="{% static "images/pf_default.jpg" %}"
              alt="avatar"
@@ -12,19 +11,17 @@
     <div class="flex-grow-1 flex-shrink-1">
         <div class="d-flex justify-content-between align-items-center w-100">
             <p class="mb-1 mb-0">
-                <a class="text-decoration-none"
-                   href="{% url 'profile' reply.author.username %}">{{ reply.author.username }}</a>
+                <a class="link-style" href="{% url 'profile' reply.author.username %}">{{ reply.author.username }}</a>
                 -
                 <span class="small">2 hours ago</span>
             </p>
             <div class="d-flex gap-2 mx-2">
                 {% if user.is_authenticated and reply.author == user %}
-                    <a class="text-decoration-none"
-                       href="{% url 'comment_delete' comment.id %}">
+                    <a class="link-style" href="{% url 'comment_delete' comment.id %}">
                         <span class="small link-danger">Delete</span>
                     </a>
                 {% endif %}
-                <a class="text-decoration-none" href="#!">
+                <a class="link-style" href="#!">
                     <span class="small">Reply</span>
                 </a>
             </div>
