@@ -13,11 +13,23 @@ class Post(models.Model):
     title = models.CharField(max_length=80)
     # Body text of the post
     body = models.CharField(max_length=5000)
+    # Users that have 'liked' the post
+    likes = models.ManyToManyField(User, related_name="likedposts", through="LikedPost")
+
     # Date post was created
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user} " f"({self.created_at:%Y-%m-%d %H:%M})" f"{self.body}..."
+
+
+class LikedPost(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} : {self.post.title}"
 
 
 # Create a User Profile Model
@@ -44,23 +56,33 @@ def create_profile(sender, instance, created, **kwargs):
 post_save.connect(create_profile, sender=User)
 
 
-# Create a Comment model
 class Comment(models.Model):
+    id = models.CharField(
+        max_length=100,
+        default=uuid.uuid4,
+        unique=True,
+        primary_key=True,
+        editable=False,
+    )
     author = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, related_name="comments"
     )
     parent_post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name="comments"
+        Post, on_delete=models.CASCADE, null=True, blank=True, related_name="comments"
+    )
+    parent = models.ForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
     body = models.CharField(max_length=500)
-    created_at = models.DateTimeField(auto_now_add=True)
-    id = models.CharField(
-        max_length=100,
-        default=uuid.uuid4,
-        unique=True,
-        primary_key=True,
-        editable=False,
+    # Users that have 'liked' the comment
+    likes = models.ManyToManyField(
+        User, related_name="likedcomments", through="LikedComment"
     )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
 
     def __str__(self):
         try:
@@ -68,33 +90,19 @@ class Comment(models.Model):
         except:
             return f"no author : {self.body[:30]}"
 
-    class Meta:
-        ordering = ["created_at"]
+    def is_root(self):
+        return self.parent is None
+
+    def get_root_post_id(self):
+        return (
+            self.parent_post.id if self.parent_post else self.parent.get_root_post_id()
+        )
 
 
-# Create a Reply model
-class Reply(models.Model):
-    author = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, related_name="replies"
-    )
-    parent_comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, related_name="replies"
-    )
-    body = models.CharField(max_length=500)
+class LikedComment(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    id = models.CharField(
-        max_length=100,
-        default=uuid.uuid4,
-        unique=True,
-        primary_key=True,
-        editable=False,
-    )
 
     def __str__(self):
-        try:
-            return f"{self.author.username} : {self.body[:30]}"
-        except:
-            return f"no author : {self.body[:30]}"
-
-    class Meta:
-        ordering = ["created_at"]
+        return f"{self.user.username} : {self.comment.body[:30]}"

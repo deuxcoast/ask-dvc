@@ -24,12 +24,15 @@
   display: inline-flex;
   align-items: center;
 }
-
-.negative-icon:hover {
+.red {
   color: #f56565;
 }
 
-.positive:hover {
+.red-hover:hover {
+  color: #f56565;
+}
+
+.positive-icon:hover {
   color: #68d391;
 }
 
@@ -43,4 +46,8 @@
 
 .icon-bar {
   gap: 1.5rem;
+}
+
+.comment-separator {
+  color: #6c757d;
 }

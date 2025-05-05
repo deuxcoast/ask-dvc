@@ -11,8 +11,11 @@ urlpatterns = [
     path("signup/", views.signup_user, name="signup"),
     path("post/", views.post, name="post"),
     path("post/<pk>", views.post_page, name="post_page"),
+    path("post/<pk>/like/", views.like_post, name="like_post"),
+    path("comment/<pk>/like/", views.like_comment, name="like_comment"),
     path("comment/sent/<pk>", views.comment_sent, name="comment_sent"),
     path("comment/delete/<pk>", views.comment_delete, name="comment_delete"),
     path("reply/sent/<pk>", views.reply_sent, name="reply_sent"),
+    path("search/", views.search, name="search"),
     path("search/", views.search, name="search"),
 ]

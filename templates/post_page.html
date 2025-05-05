@@ -2,13 +2,37 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="container" style="max-width: 960px">
+    <head>
+        <link href="{% static 'fontawesomefree/css/fontawesome.css' %}"
+              rel="stylesheet"
+              type="text/css">
+        <link href="{% static 'fontawesomefree/css/solid.css' %}"
+              rel="stylesheet"
+              type="text/css">
+    </head>
+    <div class="container">
         <h1>{{ post.title }}</h1>
         <a href={% url 'profile' post.user %}
             <p class="text-body-secondary">@{{ post.user }}</p>
         </a>
         <p>{{ post.body }}</p>
         <!--<div class="media-block pad-all">-->
+        <div class="d-flex align-items-center py-2 px-2 gap-4 icon-bar">
+            <span class="comment-icon d-flex align-items-center gap-1">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'like_post' post.id %}">
+                        {% if user in post.likes.all %}
+                            <i class="fa-solid comment-icon red fa-heart"></i>
+                        {% else %}
+                            <!-- implement modal sign in if user isn't logged in -->
+                            <i class="fa-solid comment-icon red-hover fa-heart"></i>
+                        {% endif %}
+                    </a>
+                {% else %}
+                {% endif %}
+                {{ post.likes.count }}
+            </span>
+        </div>
         <div class="py-4">
             {% if user.is_authenticated %}
                 <form method="POST" action="{% url 'comment_sent' post.id %}">
@@ -28,8 +52,9 @@
                             <h4 class="">Comments</h4>
                             <div class="row">
                                 <div class="col">
-                                    {% for comment in post.comments.all %}
-                                        <div class="py-2">{% include 'comment.html' %}</div>
+                                    <!--<div class="py-2">xx</div>-->
+                                    {% for comment in comments %}
+                                        {% include 'comment.html' with comment=comment reply_form=reply_form depth=0 %}
                                     {% endfor %}
                                 </div>
                             </div>
