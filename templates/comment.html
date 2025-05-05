@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 {% load crispy_forms_tags %}
 <head>
     <link href="{% static 'fontawesomefree/css/fontawesome.css' %}"
@@ -8,7 +9,7 @@
           rel="stylesheet"
           type="text/css">
 </head>
-<div class="d-flex flex-start">
+<div class="d-flex flex-start ">
     <a class="link-style" href="{% url 'profile' comment.author.username %}">
         <img class="rounded-circle shadow-1-strong me-3"
              src="{% static "images/pf_default.jpg" %}"
@@ -17,55 +18,70 @@
              height="50" />
     </a>
     <div class="flex-grow-1 flex-shrink-1">
-        <div class="">
+        <div>
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <a class="link-style" href="{% url 'profile' comment.author.username %}">
                         <p class="mb-1">
                         {{ comment.author.username }}</a>
                         -
-                        <span class="">2 hours ago</span>
+                        <span class="">{{ comment.created_at|naturaltime }}</span>
                     </p>
                 </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    {% if user.is_authenticated and comment.author == user %}
-                        <span class="d-flex align-items-center comment-icon negative-icon">
-                            <a class="text-decoration-none"
-                               href="{% url 'comment_delete' comment.id %}">
-                                <i class="fa-solid fa-trash negative-icon comment-icon"></i>
-                            </a>
-                        </span>
-                    {% endif %}
-                </div>
+                {% if user.is_authenticated and comment.author == user %}
+                    <div class="d-flex align-items-center comment-icon negative-icon">
+                        <a class="text-decoration-none"
+                           href="{% url 'comment_delete' comment.id %}">
+                            <i class="fa-solid fa-trash negative-icon comment-icon"></i>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
             <p class="mb-0">{{ comment.body }}</p>
         </div>
         <div class="d-flex align-items-center py-2 px-2 gap-4 icon-bar">
             <i class="fa-solid fa-up-long comment-icon positive-icon"></i>
             <i class="fa-solid fa-down-long comment-icon negative-icon"></i>
-            <span id="showFormButton-{{ comment.id }}"
-                  class="d-flex align-items-center comment-icon reply-icon">
-                <i class="fa-solid fa-comment-dots me-1"></i>
-                <span>Reply</span>
+            <span id="toggleReplyBtn-{{ comment.id }}"
+                  class="comment-icon reply-icon d-flex align-items-center gap-1">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span class="btn-text">Reply</span>
             </span>
         </div>
-        {% if reply_form %}
-            <div id="replyContainer-{{ comment.id }}"
-                 class="py-4"
-                 style="display: none">
-                <form method="POST" action="{% url 'reply_sent' comment.id %}">
-                    {% csrf_token %}
-                    {% crispy reply_form %}
-                </form>
-            </div>
-        {% endif %}
-        {% for reply in comment.replies.all %}
-            {% include 'reply.html' %}
+        <div id="replyContainer-{{ comment.id }}"
+             class="py-4"
+             style="display: none">
+            <form method="POST" action="{% url 'reply_sent' comment.id %}">
+                {% csrf_token %}
+                {% crispy reply_form %}
+            </form>
+        </div>
+        <hr class="comment-separator" />
+        {% for child in comment.children.all %}
+            {% include 'comment.html' with comment=child reply_form=reply_form depth=depth|add:"4" %}
         {% endfor %}
     </div>
 </div>
 <script>
-	document.getElementById('showFormButton-{{ comment.id }}').addEventListener('click', function() {
-		document.getElementById('replyContainer-{{ comment.id }}').style.display = 'block';
+    document.addEventListener('DOMContentLoaded', () => {
+        const commentId = "{{ comment.id }}";
+        const replyBtn = document.getElementById(`toggleReplyBtn-${commentId}`);
+        const replyBox = document.getElementById(`replyContainer-${commentId}`);
+
+        replyBtn.addEventListener('click', () => {
+            const isVisible = replyBox.style.display === 'block';
+            replyBox.style.display = isVisible ? 'none' : 'block';
+
+            const icon = replyBtn.querySelector('i');
+            const text = replyBtn.querySelector('.btn-text');
+
+            if (isVisible) {
+                icon.className = 'fa-solid fa-comment-dots';
+                text.textContent = 'Reply';
+            } else {
+                icon.className = 'fa-solid fa-xmark';
+                text.textContent = 'Cancel';
+            }
         });
+    });
 </script>

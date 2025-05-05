@@ -44,23 +44,28 @@ def create_profile(sender, instance, created, **kwargs):
 post_save.connect(create_profile, sender=User)
 
 
-# Create a Comment model
 class Comment(models.Model):
+    id = models.CharField(
+        max_length=100,
+        default=uuid.uuid4,
+        unique=True,
+        primary_key=True,
+        editable=False,
+    )
     author = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, related_name="comments"
     )
     parent_post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name="comments"
+        Post, on_delete=models.CASCADE, null=True, blank=True, related_name="comments"
+    )
+    parent = models.ForeignKey(
+        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
     body = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
-    id = models.CharField(
-        max_length=100,
-        default=uuid.uuid4,
-        unique=True,
-        primary_key=True,
-        editable=False,
-    )
+
+    class Meta:
+        ordering = ["created_at"]
 
     def __str__(self):
         try:
@@ -68,33 +73,10 @@ class Comment(models.Model):
         except:
             return f"no author : {self.body[:30]}"
 
-    class Meta:
-        ordering = ["created_at"]
+    def is_root(self):
+        return self.parent is None
 
-
-# Create a Reply model
-class Reply(models.Model):
-    author = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, related_name="replies"
-    )
-    parent_comment = models.ForeignKey(
-        Comment, on_delete=models.CASCADE, related_name="replies"
-    )
-    body = models.CharField(max_length=500)
-    created_at = models.DateTimeField(auto_now_add=True)
-    id = models.CharField(
-        max_length=100,
-        default=uuid.uuid4,
-        unique=True,
-        primary_key=True,
-        editable=False,
-    )
-
-    def __str__(self):
-        try:
-            return f"{self.author.username} : {self.body[:30]}"
-        except:
-            return f"no author : {self.body[:30]}"
-
-    class Meta:
-        ordering = ["created_at"]
+    def get_root_post_id(self):
+        return (
+            self.parent_post.id if self.parent_post else self.parent.get_root_post_id()
+        )

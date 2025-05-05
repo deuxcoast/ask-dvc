@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Comment, Post, Reply
+from .models import Comment, Post
 
 
 class PostForm(forms.ModelForm):
@@ -85,23 +85,6 @@ class CommentCreateForm(forms.ModelForm):
         model = Comment
         fields = ["body"]
         widgets = {"body": forms.TextInput(attrs={"placeholder": "Add comment..."})}
-        labels = {"body": ""}
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = "post"
-        self.helper.layout = Layout(
-            Field("body", css_class="mb-3"),  # adds spacing below the input
-            Submit("submit", "Reply", css_class="btn btn-success"),
-        )
-
-
-class ReplyCreateForm(forms.ModelForm):
-    class Meta:
-        model = Reply
-        fields = ["body"]
-        widgets = {"body": forms.TextInput(attrs={"placeholder": "Add reply..."})}
         labels = {"body": ""}
 
     def __init__(self, *args, **kwargs):

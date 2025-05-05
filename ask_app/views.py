@@ -8,8 +8,8 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import CommentCreateForm, PostForm, ReplyCreateForm, SignUpForm
-from .models import Comment, Post, Profile, Reply
+from .forms import CommentCreateForm, PostForm, SignUpForm
+from .models import Comment, Post, Profile
 
 
 # displays all posts on index (home) page
@@ -146,9 +146,14 @@ def post_page(request, pk):
     post = get_object_or_404(Post, id=pk)
 
     comment_form = CommentCreateForm()
-    reply_form = ReplyCreateForm()
+    top_level_comments = post.comments.filter(parent__isnull=True)
 
-    context = {"post": post, "comment_form": comment_form, "reply_form": reply_form}
+    context = {
+        "post": post,
+        "comment_form": comment_form,
+        "reply_form": comment_form,
+        "comments": top_level_comments,
+    }
     return render(request, "post_page.html", context)
 
 
@@ -158,7 +163,7 @@ def comment_sent(request, pk):
 
     if request.method == "POST":
         form = CommentCreateForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user
             comment.parent_post = post
@@ -172,27 +177,28 @@ def comment_delete(request, pk):
     comment = get_object_or_404(Comment, id=pk)
 
     if request.method == "POST":
+        post_id = comment.get_root_post_id()
         comment.delete()
         messages.success(request, "Comment deleted.")
-
-        return redirect("post_page", comment.parent_post.id)
+        return redirect("post_page", post_id)
 
     return render(request, "comment_delete.html", {"comment": comment})
 
 
 @login_required
 def reply_sent(request, pk):
-    comment = get_object_or_404(Comment, id=pk)
+    parent_comment = get_object_or_404(Comment, id=pk)
 
     if request.method == "POST":
-        form = ReplyCreateForm(request.POST)
-        if form.is_valid:
+        form = CommentCreateForm(request.POST)  # use the same form as for comments
+        if form.is_valid():
             reply = form.save(commit=False)
             reply.author = request.user
-            reply.parent_comment = comment
+            reply.parent = parent_comment
+            reply.parent_post = parent_comment.parent_post  # inherit post
             reply.save()
 
-    return redirect("post_page", comment.parent_post_id)
+    return redirect("post_page", parent_comment.parent_post.id)
 
 
 def search(request):
