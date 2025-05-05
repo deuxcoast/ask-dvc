@@ -6,7 +6,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from .forms import CommentCreateForm, PostForm, SignUpForm
 from .models import Comment, Post, Profile
@@ -157,6 +159,28 @@ def post_page(request, pk):
     return render(request, "post_page.html", context)
 
 
+def like_post(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    user_exists = post.likes.filter(id=request.user.id).exists()
+
+    if user_exists:
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    # Get the referring URL
+    referer = request.META.get("HTTP_REFERER")
+
+    # Validate the referer is safe to redirect to
+    if referer and url_has_allowed_host_and_scheme(
+        referer, allowed_hosts={request.get_host()}
+    ):
+        return HttpResponseRedirect(referer)
+
+    # Fallback to the post page
+    return redirect("post_page", post.id)
+
+
 @login_required
 def comment_sent(request, pk):
     post = get_object_or_404(Post, id=pk)
@@ -199,6 +223,18 @@ def reply_sent(request, pk):
             reply.save()
 
     return redirect("post_page", parent_comment.parent_post.id)
+
+
+def like_comment(request, pk):
+    comment = get_object_or_404(Comment, id=pk)
+    user_exists = comment.likes.filter(id=request.user.id).exists()
+
+    if user_exists:
+        comment.likes.remove(request.user)
+    else:
+        comment.likes.add(request.user)
+
+    return redirect("post_page", comment.parent_post.id)
 
 
 def search(request):

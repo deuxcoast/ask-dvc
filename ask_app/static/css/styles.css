@@ -24,8 +24,11 @@
   display: inline-flex;
   align-items: center;
 }
+.red {
+  color: #f56565;
+}
 
-.negative-icon:hover {
+.red-hover:hover {
   color: #f56565;
 }
 

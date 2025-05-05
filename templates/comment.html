@@ -32,7 +32,7 @@
                     <div class="d-flex align-items-center comment-icon negative-icon">
                         <a class="text-decoration-none"
                            href="{% url 'comment_delete' comment.id %}">
-                            <i class="fa-solid fa-trash negative-icon comment-icon"></i>
+                            <i class="fa-solid fa-trash red-hover comment-icon"></i>
                         </a>
                     </div>
                 {% endif %}
@@ -40,8 +40,23 @@
             <p class="mb-0">{{ comment.body }}</p>
         </div>
         <div class="d-flex align-items-center py-2 px-2 gap-4 icon-bar">
-            <i class="fa-solid fa-up-long comment-icon positive-icon"></i>
-            <i class="fa-solid fa-down-long comment-icon negative-icon"></i>
+            <span class="comment-icon d-flex align-items-center gap-1">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'like_comment' comment.id %}">
+                        {% if user in comment.likes.all %}
+                            <i class="fa-solid comment-icon red fa-heart"></i>
+                        {% else %}
+                            <i class="fa-solid comment-icon red-hover fa-heart"></i>
+                        {% endif %}
+                    </a>
+                {% else %}
+                    <!-- implement modal sign in if user isn't logged in -->
+                    <i class="fa-solid comment-icon red-hover fa-heart"></i>
+                {% endif %}
+                {{ comment.likes.count }}
+            </span>
+            <!--<i class="fa-solid fa-up-long comment-icon positive-icon"></i>-->
+            <!--<i class="fa-solid fa-down-long comment-icon negative-icon"></i>-->
             <span id="toggleReplyBtn-{{ comment.id }}"
                   class="comment-icon reply-icon d-flex align-items-center gap-1">
                 <i class="fa-solid fa-comment-dots"></i>
@@ -79,7 +94,7 @@
                 icon.className = 'fa-solid fa-comment-dots';
                 text.textContent = 'Reply';
             } else {
-                icon.className = 'fa-solid fa-xmark';
+                icon.className = 'fa-solid fa-circle-xmark';
                 text.textContent = 'Cancel';
             }
         });

@@ -13,11 +13,23 @@ class Post(models.Model):
     title = models.CharField(max_length=80)
     # Body text of the post
     body = models.CharField(max_length=5000)
+    # Users that have 'liked' the post
+    likes = models.ManyToManyField(User, related_name="likedposts", through="LikedPost")
+
     # Date post was created
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user} " f"({self.created_at:%Y-%m-%d %H:%M})" f"{self.body}..."
+
+
+class LikedPost(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} : {self.post.title}"
 
 
 # Create a User Profile Model
@@ -62,6 +74,11 @@ class Comment(models.Model):
         "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
     body = models.CharField(max_length=500)
+    # Users that have 'liked' the comment
+    likes = models.ManyToManyField(
+        User, related_name="likedcomments", through="LikedComment"
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -80,3 +97,12 @@ class Comment(models.Model):
         return (
             self.parent_post.id if self.parent_post else self.parent.get_root_post_id()
         )
+
+
+class LikedComment(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} : {self.comment.body[:30]}"
