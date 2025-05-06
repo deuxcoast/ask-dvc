@@ -1,107 +1,85 @@
 {% load static %}
-<!--<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">-->
-<!--    <div class="container-fluid">-->
-<!--        <a class="navbar-brand" href="{% url 'index' %}">askDVC</a>-->
-<!--        <button class="navbar-toggler"-->
-<!--                type="button"-->
-<!--                data-bs-toggle="collapse"-->
-<!--                data-bs-target="#navbarSupportedContent"-->
-<!--                aria-controls="navbarSupportedContent"-->
-<!--                aria-expanded="false"-->
-<!--                aria-label="Toggle navigation">-->
-<!--            <span class="navbar-toggler-icon"></span>-->
-<!--        </button>-->
-<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
-<!--                {% if user.is_authenticated %}-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="{% url 'profile' request.user.id %}">My Profile</a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>-->
-<!--                    </li>-->
-<!--                {% else %}-->
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="{% url 'login' %}">Login</a>-->
-<!--                    </li>-->
-<!--                {% endif %}-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="{% url 'profile_list' %}">Profile List</a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--            <form class="d-flex" role="search">-->
-<!--                <input class="form-control me-2"-->
-<!--                       type="search"-->
-<!--                       placeholder="Search"-->
-<!--                       aria-label="Search" />-->
-<!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</nav>-->
-<div class="container">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'index' %}">askDVC</a>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!--<div class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">-->
-                <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2"
-                               type="search"
-                               placeholder="Search"
-                               aria-label="Search" />
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </div>
-                <div class="d-flex ms-auto">
-                    {% if user.is_authenticated %}
-                        <div>
-                            <a type="button" class="btn btn-primary" href="{% url 'post' %}">New Post</a>
-                        </div>
-                        <div class="dropdown text-end">
-                            <a href="#"
-                               class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
-                               data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                                <img src="{% static 'images/pf_default.jpg' %}"
-                                     alt="mdo"
-                                     width="32"
-                                     height="32"
-                                     class="rounded-circle">
-                            </a>
-                            <ul class="dropdown-menu text-small" style="">
-                                <li>
-                                    <a class="dropdown-item" href="#">Settings</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
-                                </li>
-                            </ul>
-                        </div>
-                    {% else %}
-                        <a type="button"
-                           class="btn btn-outline-primary me-2"
-                           href="{% url 'login' %}">Login</a>
-                        <a type="button" class="btn btn-primary" href="{% url 'signup' %}">Sign Up</a>
-                    {% endif %}
-                </div>
+<nav class="navbar navbar-expand-lg bg-success navbar-border-bottom-only"
+     data-bs-theme="light">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <h2>askDVC</h2>
+        </a>
+        <!-- Toggler for mobile -->
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarContent"
+                aria-controls="navbarContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse justify-content-between"
+             id="navbarContent">
+            <!-- Centered Search Form -->
+            <div class="mx-auto w-50">
+                <form class="d-flex" method="POST" action="{% url 'search' %}">
+                    {% csrf_token %}
+                    <input class="form-control me-2"
+                           type="search"
+                           name="search"
+                           placeholder="Search"
+                           aria-label="Search">
+                    <button class="btn btn-light" type="submit">Search</button>
+                </form>
             </div>
+            <!-- Right-aligned buttons and dropdown -->
+            <ul class="navbar-nav ms-auto align-items-center">
+                {% if user.is_authenticated %}
+                    <!-- New Post Button -->
+                    <li class="nav-item me-2">
+                        <a class="btn btn-info" href="{% url 'post' %}">New Post</a>
+                    </li>
+                    <!-- Dropdown with profile/settings/logout -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center"
+                           href="#"
+                           id="navbarDropdown"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <img src="{% static 'images/pf_default.jpg' %}"
+                                 alt="Avatar"
+                                 class="rounded-circle me-2"
+                                 width="32"
+                                 height="32">
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile_settings' user.id %}">Settings</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <!-- Login and Sign Up buttons for unauthenticated users -->
+                    <li class="nav-item me-2">
+                        <a class="btn btn-light" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-light" href="{% url 'signup' %}">Sign Up</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
-</div>
+    </div>
+</nav>
+<!--</div>-->

@@ -24,7 +24,7 @@
                         <div class="card-header">Follows</div>
                         <div class="card-body">
                             <p class="card-text">
-                                {% for following in profile.follows.all %}
+                                {% for following in follows %}
                                     <a href="{% url 'profile' following.user.id %}">@{{ following }}</a>
                                 {% endfor %}
                                 <br />
@@ -37,7 +37,7 @@
                         <div class="card-header">Followed By</div>
                         <div class="card-body">
                             <p class="card-text">
-                                {% for follower in profile.followed_by.all %}
+                                {% for follower in followed_by %}
                                     <a href="{% url 'profile' follower.user.id %}">@{{ follower }}</a>
                                 {% endfor %}
                                 <br />
@@ -59,6 +59,8 @@
                                     value="follow"
                                     type="submit">Follow @{{ profile.user.username }}</button>
                         {% endif %}
+                        <a href="{% url 'profile_settings' request.user.id %}"
+                        class="btn btn-outline-primary">Go to Profile Settings</a>
                     </form>
                 </div>
             </div>
