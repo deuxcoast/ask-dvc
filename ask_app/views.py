@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import CommentCreateForm, PostForm, SignUpForm
+from .forms import CommentCreateForm, PostForm, ProfileSettingsForm, SignUpForm
 from .models import Comment, Post, Profile
 
 
@@ -217,6 +217,7 @@ def comment_sent(request, pk):
 
     return redirect("post_page", post.id)
 
+
 @login_required
 def comment_delete(request, pk):
     comment = get_object_or_404(Comment, id=pk)
@@ -323,6 +324,7 @@ def edit_profile_settings(request, pk):
 
     return render(request, "settings_edit.html", {"form": form, "profile": profile})
 
+
 @login_required
 def comment_delete(request, pk):
     comment = get_object_or_404(Comment, id=pk)
@@ -386,4 +388,3 @@ def search(request):
             "search_results.html",
             {"search_term": search_term, "post_results": post_results},
         )
->>>>>>> main
