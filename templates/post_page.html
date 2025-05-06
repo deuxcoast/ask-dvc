@@ -32,6 +32,11 @@
                 {% endif %}
                 {{ post.likes.count }}
             </span>
+            <span id="toggleReplyBtn-{{ comment.id }}"
+                  class="comment-icon reply-icon d-flex align-items-center gap-1">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span class="btn-text">{{ post.comment_count }}</span>
+            </span>
         </div>
         <div class="py-4">
             {% if user.is_authenticated %}
