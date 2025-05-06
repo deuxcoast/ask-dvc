@@ -18,11 +18,11 @@
         </div>
 
         <div class="mb-3">
-            <strong>Bio:</strong> {{ profile.user.bio }}
+            <strong>Bio:</strong> {{ profile.bio }}
         </div>
 
         <div class="mb-3">
-            <strong>Color Theme:</strong> {% if profile.user.dark_mode %} Dark Mode {% else %} Light Mode {% endif %}
+            <strong>Color Theme:</strong> {% if profile.dark_mode %} Dark Mode {% else %} Light Mode {% endif %}
         </div>
 
         <a href="{% url 'edit_settings' request.user.id %}" class="btn btn-primary">Edit Settings</a>
