@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -23,20 +23,23 @@ def index(request):
             if form.is_valid():
                 post = form.save(commit=False)
                 post.user = request.user
-                meep.save()
+                post.save()
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
 
-        posts = Post.objects.order_by("-created_at")
+        posts = Post.objects.annotate(comment_count=Count("comments")).order_by(
+            "-created_at"
+        )
         page_number = request.GET.get("page", 1)
         paginator = Paginator(posts, 10)
-
         page_obj = paginator.get_page(page_number)
 
         return render(request, "index.html", {"posts": page_obj})
 
     else:
-        posts = Post.objects.all().order_by("-created_at")
+        posts = Post.objects.annotate(comment_count=Count("comments")).order_by(
+            "-created_at"
+        )
         return render(request, "index.html", {"posts": posts})
 
 
@@ -53,6 +56,10 @@ def profile(request, username):
     if request.user.is_authenticated:
         user = get_object_or_404(User, username=username)
         profile = get_object_or_404(Profile, user=user)
+
+        follows = profile.follows.exclude(user=profile.user)
+        followed_by = profile.followed_by.exclude(user=profile.user)
+
         posts = user.posts.all()
         # posts = Post.objects.filter(user=user)
 
@@ -71,7 +78,16 @@ def profile(request, username):
             # Save the profile
             current_user_profile.save()
 
-        return render(request, "profile.html", {"profile": profile, "posts": posts})
+        return render(
+            request,
+            "profile.html",
+            {
+                "profile": profile,
+                "posts": posts,
+                "follows": follows,
+                "followed_by": followed_by,
+            },
+        )
     else:
         messages.success(request, ("You must be logged in to view this page."))
         return redirect("index")
@@ -145,16 +161,21 @@ def post(request):
 
 
 def post_page(request, pk):
-    post = get_object_or_404(Post, id=pk)
+    post = get_object_or_404(
+        Post.objects.annotate(comment_count=Count("comments")), id=pk
+    )
 
     comment_form = CommentCreateForm()
-    top_level_comments = post.comments.filter(parent__isnull=True)
+    top_level_comments = post.comments.filter(parent__isnull=True).order_by(
+        "-created_at"
+    )
 
     context = {
         "post": post,
         "comment_form": comment_form,
         "reply_form": comment_form,
         "comments": top_level_comments,
+        "comment_count": post.comment_count,
     }
     return render(request, "post_page.html", context)
 
@@ -191,6 +212,7 @@ def comment_sent(request, pk):
             comment = form.save(commit=False)
             comment.author = request.user
             comment.parent_post = post
+            # comment.root_post = post
             comment.save()
 
     return redirect("post_page", post.id)

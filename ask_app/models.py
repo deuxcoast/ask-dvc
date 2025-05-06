@@ -73,6 +73,13 @@ class Comment(models.Model):
     parent = models.ForeignKey(
         "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
     )
+
+    # All comments have a reference to their root post, which allows us to
+    # efficiently query the total number of comments for a given post
+    # root_post = models.ForeignKey(
+    #     Post, on_delete=models.CASCADE, related_name="all_comments_in_thread", null=True
+    # )  # null=True to migrate existing data
+
     body = models.CharField(max_length=500)
     # Users that have 'liked' the comment
     likes = models.ManyToManyField(

@@ -39,6 +39,9 @@ askDVC was built over 4 weeks in the Spring of 2025 as part of
 - [Bootstrap](https://getbootstrap.com): The UI is built with the Bootstrap
   toolkit, with theming provided by [Bootswatch](https://bootswatch.com/).
 
+- [SQLite](https://sqlite.org/): The database is currently SQLite, although we
+  plan on migrating to Postgres.
+
 ## Team Members
 
 #### Aanya
