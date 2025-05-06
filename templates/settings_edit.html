@@ -71,25 +71,24 @@ input:checked ~ .switch-label:last-child {
 
         <div class="mb-3">
             <label for="id_username" class="form-label">Username</label>
-            <textarea id="id_username" name="username" class="form-control">{{ profile.user.username }}</textarea>
+            <input type="text" id="id_username" name="username" class="form-control" value="{{ profile.user.username }}">
         </div>
 
         <div class="mb-3">
             <label for="id_bio" class="form-label">Bio</label>
-            <textarea id="id_bio" name="bio" class="form-control">{{ profile.user.bio }}</textarea>
+            <textarea id="id_bio" name="bio" class="form-control">{{ profile.bio }}</textarea>
         </div>
 
         <div class="mb-3 form-check">
             <label style="color:#afaeb5" class="switch-label">Color Mode</label>
             <label class="switch">
                 <span style="color:#afaeb5" class="switch-label">Light</span>
-                <input type="checkbox">
+                <input type="checkbox" name="dark_mode" {% if profile.dark_mode %}checked{% endif %}>
                 <span class="slider round"></span>
                 <span style="color:#afaeb5" class="switch-label">Dark</span>
             </label>
         </div>
-
-        <a href="{% url 'profile_settings' request.user.id %}" onclick="document.getElementById('profile-form').submit();" class="btn btn-primary">Save Changes</a>
+        <button type="submit" onclick="setTimeout(() => { window.location.href = '{% url 'profile_settings' request.user.id %}'; }, 500);" class="btn btn-primary">Save Changes</button>
     </form>
 </div>
 {% endblock %}

@@ -28,7 +28,7 @@ class Profile(models.Model):
     )
     date_modified = models.DateTimeField(User, auto_now=True)
     bio = models.CharField(max_length=250, default="")
-    picture = models.CharField(max_length=500, default="")
+    picture = models.ImageField(null=True, blank=True, upload_to="images/")
     dark_mode = models.BooleanField(default=False)
     def __str__(self):
         return self.user.username

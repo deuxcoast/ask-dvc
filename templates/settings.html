@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <div class="container mt-5">
     <h2 style="color:#afaeb5">Profile Settings</h2>
 
@@ -8,7 +9,8 @@
 
         <div class="mb-3">
             <strong>Profile Picture:</strong><br>
-            <img src="{{ profile.get_profile_picture }}" alt="Profile Picture" class="img-thumbnail" width="150">
+
+            <img src="{{ profile.picture.url }}" alt="Profile Picture" class="img-thumbnail" width="150">
         </div>
 
         <div class="mb-3">

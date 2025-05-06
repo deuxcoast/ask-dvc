@@ -164,6 +164,7 @@ def profile_settings(request, pk):
     # Redirect to login page if user is not authenticated
     return redirect('login')
 
+
 def edit_profile_settings(request, pk):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -173,8 +174,20 @@ def edit_profile_settings(request, pk):
     if request.method == "POST":
         form = ProfileSettingsForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            form.save()
-            return redirect('profile_settings', pk=pk)  # Redirect after saving
+            profile = form.save(commit=False)
+            profile.user.username = form.cleaned_data['username']
+            profile.user.save()
+            profile.save()
+
+            # Force database reload to ensure latest data is displayed
+            profile.refresh_from_db()
+
+            print("Updated Profile:", profile.bio, profile.picture, profile.dark_mode)  # Debugging confirmation
+
+            return redirect('profile_settings', pk=pk)
+        else:
+            print("Form errors:", form.errors)  # Debugging
+
     else:
         form = ProfileSettingsForm(instance=profile)
 
