@@ -10,23 +10,8 @@ from .models import Post, Profile
 
 # displays all posts on index (home) page
 def index(request):
-    # if request.user.is_authenticated:
-    #     form = PostForm(request.POST or None)
-
-    #     # if request.method == "POST":
-    #     #     if form.is_valid():
-    #     #         post = form.save(commit=False)
-    #     #         post.user = request.user
-    #     #         post.save()
-    #     #         messages.success(request, "Your post was successful.")
-    #     #         return redirect("index")
-
-    #     # posts = Post.objects.all().order_by("-created_at")
-    #     # return render(request, "index.html", {"posts": posts, "form": form})
-
-    # else:
-        posts = Post.objects.all().order_by("-created_at")
-        return render(request, "index.html", {"posts": posts})
+    posts = Post.objects.all().order_by("-created_at")
+    return render(request, "index.html", {"posts": posts})
 
 
 def profile_list(request):
@@ -45,6 +30,9 @@ def profile(request, pk):
 
         # Post form logic
         if request.method == "POST":
+            # selected_categories = []
+            # show_category = False
+
             # Get current user
             current_user_profile = request.user.profile
             # Get form data
@@ -54,6 +42,14 @@ def profile(request, pk):
                 current_user_profile.follows.remove(profile)
             elif action == "follow":
                 current_user_profile.follows.add(profile)
+            
+            # selected_categories = request.POST.getlist('categories')
+            # if selected_categories:
+            #     show_category = True
+
+            # context = {
+            #     'selected_categories': selected_categories,
+            #     'show_button': show_category }
 
             # Save the profile
             current_user_profile.save()
@@ -128,7 +124,3 @@ def post(request):
 
         posts = Post.objects.all().order_by("-created_at")
         return render(request, "post.html", {"posts": posts, "form": form})
-
-    # else:
-    #     posts = Post.objects.all().order_by("-created_at")
-    #     return render(request, "index.html", {"posts": posts})

@@ -6,6 +6,15 @@ from .models import Post
 
 
 class PostForm(forms.ModelForm):
+    title = forms.CharField(
+        required=True,
+        widget=forms.widgets.Textarea(
+            attrs={"placeholder": "Title", 
+                   "class": "form-control", 
+                   "rows" : "1"}
+        ),
+        label="",
+    )
     body = forms.CharField(
         required=True,
         widget=forms.widgets.Textarea(

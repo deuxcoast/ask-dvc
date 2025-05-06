@@ -1,20 +1,54 @@
 {% extends 'base.html' %}
 {% block content %}
-    <!-- {% for post in posts %}
-        <div class="card">
-            <h5 class="card-header">{{ post.title }}</h5>
-            <div class="card-body">
-                <h3 class="card-title">@{{ post.user.username }}</h3>
-                <p class="card-text">{{ post.body }}</p>
-            </div>
-        </div>
-        <br />
-        <br />
-    {% endfor %} -->
     <div class="col">
         {% if form %}
             <form method="POST">
                 {% csrf_token %}
+                <h2>Make a Post</h2>
+                <br />
+                <!-- categories dropdown -->
+                
+
+                <!-- <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="categories" data-bs-toggle="dropdown" aria-expanded="false">
+                        Add Categories
+                    </button>
+                    <div class="dropdown-menu p-3" aria-labelledby="categories">
+                        <div class="btn-group-vertical" role="group" aria-label="category-toggles"> -->
+                            <!-- <div class="icheck-material-lightblue">
+                                <input type="checkbox" id="categ-general" autocomplete="off">
+                                <label for="categ-general">General</label>
+                            </div>
+
+                            <div class="icheck-material-indigo">
+                                <input type="checkbox" id="categ-classes" autocomplete="off">
+                                <label for="categ-classes">Classes</label>
+                            </div>
+
+                            <div class="icheck-material-purple">
+                                <input type="checkbox" id="categ-profs" autocomplete="off">
+                                <label for="categ-profs">Professors</label>
+                            </div>
+
+                            <div class="icheck-material-lightgreen">
+                                <input type="checkbox" id="categ-food" autocomplete="off">
+                                <label for="categ-food">Food</label>
+                            </div>
+
+                            <div class="icheck-material-teal">
+                                <input type="checkbox" id="categ-transfer" autocomplete="off">
+                                <label for="categ-transfer">Transfer</label>
+                            </div>
+                            
+                            <div class="icheck-material-pink">
+                                <input type="checkbox" id="categ-geese" autocomplete="off">
+                                <label for="categ-geese">Geese</label>
+                            </div>
+                            
+                        </div> -->
+                    <!-- </div>
+                </div> -->
+                <br />
                 {{ form.as_p }}
                 <br />
                 <button type="submit" class="btn btn-primary">Post</button>
