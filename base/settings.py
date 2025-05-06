@@ -26,9 +26,17 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
     "ask_app",
+<<<<<<< HEAD
     "crispy_forms",
     "crispy_bootstrap4",
+||||||| a4e8ba8
+=======
+    "crispy_forms",
+    "crispy_bootstrap4",
+    "fontawesomefree",
+>>>>>>> main
 ]
 
 MIDDLEWARE = [

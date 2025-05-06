@@ -2,6 +2,14 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
+    <head>
+        <link href="{% static 'fontawesomefree/css/fontawesome.css' %}"
+              rel="stylesheet"
+              type="text/css">
+        <link href="{% static 'fontawesomefree/css/solid.css' %}"
+              rel="stylesheet"
+              type="text/css">
+    </head>
     <div class="container">
         <h1>{{ post.title }}</h1>
         <a href={% url 'profile' post.user %}
@@ -9,29 +17,56 @@
         </a>
         <p>{{ post.body }}</p>
         <!--<div class="media-block pad-all">-->
-        <div class="py-4">
-            <form method="POST" action="{% url 'comment_sent' post.id %}">
-                {% csrf_token %}
-                {% crispy comment_form %}
-            </form>
+        <div class="d-flex align-items-center py-2 px-2 gap-4 icon-bar">
+            <span class="comment-icon d-flex align-items-center gap-1">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'like_post' post.id %}">
+                        {% if user in post.likes.all %}
+                            <i class="fa-solid comment-icon red fa-heart"></i>
+                        {% else %}
+                            <!-- implement modal sign in if user isn't logged in -->
+                            <i class="fa-solid comment-icon red-hover fa-heart"></i>
+                        {% endif %}
+                    </a>
+                {% else %}
+                {% endif %}
+                {{ post.likes.count }}
+            </span>
+            <span id="toggleReplyBtn-{{ comment.id }}"
+                  class="comment-icon reply-icon d-flex align-items-center gap-1">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span class="btn-text">{{ post.comment_count }}</span>
+            </span>
         </div>
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <!--<div class="col-md-12 col-lg-10 col-xl-8">-->
-                <div class="card">
-                    <div class="card-body p-4">
-                        <h4 class="">Comments</h4>
-                        <div class="row">
-                            <div class="col">
-                                {% for comment in post.comments.all %}
-                                    <div class="py-2">{% include 'comment.html' %}</div>
-                                {% endfor %}
+        <div class="py-4">
+            {% if user.is_authenticated %}
+                <form method="POST" action="{% url 'comment_sent' post.id %}">
+                    {% csrf_token %}
+                    {% crispy comment_form %}
+                </form>
+            {% else %}
+                <a class="link-style" href="{% url 'login' %}">Login</a> to comment.
+            {% endif %}
+        </div>
+        {% if post.comments.count %}
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <!--<div class="col-md-12 col-lg-10 col-xl-8">-->
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <h4 class="">Comments</h4>
+                            <div class="row">
+                                <div class="col">
+                                    <!--<div class="py-2">xx</div>-->
+                                    {% for comment in comments %}
+                                        {% include 'comment.html' with comment=comment reply_form=reply_form depth=0 %}
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        {% endif %}
+    </div>
 {% endblock %}
