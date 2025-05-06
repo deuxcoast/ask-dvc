@@ -4,3 +4,4 @@ Django==5.2
 django-crispy-forms==2.4
 fontawesomefree==6.6.0
 sqlparse==0.5.3
+pillow==10.0.0

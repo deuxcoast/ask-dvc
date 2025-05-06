@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mt-5">
+        <head>
+            <style>
+            .switch {
+  display: flex;
+  align-items: center;
+}
+
+.switch-label {
+  font-size: 18px;
+  margin: 0 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+.slider {
+  position: relative;
+  width: 60px;
+  height: 34px;
+  background-color: #ccc;
+  border-radius: 34px;
+  cursor: pointer;
+  transition: .4s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: .4s;
+}
+
+input {
+  display: none;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Adjust label colors based on switch state */
+input:checked ~ .switch-label:first-child {
+  color: #888;
+}
+
+input:checked ~ .switch-label:last-child {
+  color: #2196F3;
+}
+
+            </style>
+        </head>
+        <h2>Edit Profile Settings</h2>
+        <form id='profile-form' method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_picture" class="form-label">Profile Picture</label>
+                <input type="file"
+                       id="id_picture"
+                       name="picture"
+                       accept="image/*"
+                       class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                <input type="text"
+                       id="id_username"
+                       name="username"
+                       class="form-control"
+                       value="{{ profile.user.username }}">
+            </div>
+            <div class="mb-3">
+                <label for="id_bio" class="form-label">Bio</label>
+                <textarea id="id_bio" name="bio" class="form-control">{{ profile.bio }}</textarea>
+            </div>
+            <div class="mb-3 form-check">
+                <label style="color:#afaeb5" class="switch-label">Color Mode</label>
+                <label class="switch">
+                    <span style="color:#afaeb5" class="switch-label">Light</span>
+                    <input type="checkbox"
+                           name="dark_mode"
+                           {% if profile.dark_mode %}checked{% endif %}>
+                    <span class="slider round"></span>
+                    <span style="color:#afaeb5" class="switch-label">Dark</span>
+                </label>
+            </div>
+            <button type="submit"
+                    onclick="setTimeout(() => { window.location.href = '{% url 'profile_settings' request.user.id %}'; }, 500);"
+                    class="btn btn-success">Save Changes</button>
+        </form>
+    </div>
+{% endblock %}
