@@ -1,3 +1,5 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Field, Layout, Submit
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -77,6 +79,7 @@ class SignUpForm(UserCreationForm):
             '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
         )
 
+
 class CommentCreateForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -84,45 +87,46 @@ class CommentCreateForm(forms.ModelForm):
         widgets = {"body": forms.TextInput(attrs={"placeholder": "Add comment..."})}
         labels = {"body": ""}
 
+
 class ProfileSettingsForm(forms.ModelForm):
     picture = forms.ImageField(
         required=True,
-        widget=forms.FileInput(
-            attrs={"accept": "image/*", "class": "form-control"}
-        ),
+        widget=forms.FileInput(attrs={"accept": "image/*", "class": "form-control"}),
         label="Profile Picture",
     )
     username = forms.CharField(
         required=True,
-        widget=forms.Textarea(
-            attrs={"class": "form-control"}
-        ),
+        widget=forms.Textarea(attrs={"class": "form-control"}),
         label="Username",
     )
     bio = forms.CharField(
         required=True,
-        widget=forms.Textarea(
-            attrs={"class": "form-control"}
-        ),
+        widget=forms.Textarea(attrs={"class": "form-control"}),
         label="Bio",
     )
     dark_mode = forms.BooleanField(
         required=False,
-        widget=forms.CheckboxInput(
-            attrs={"class": "form-check-input"}
-        ),
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
         label="Color Theme",
     )
 
     class Meta:
         model = Profile
-        fields = ["picture", "bio", "dark_mode"]  # Removed 'username' because it's part of the User model
+        fields = [
+            "picture",
+            "bio",
+            "dark_mode",
+        ]  # Removed 'username' because it's part of the User model
         exclude = ("user",)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.user:
-            self.fields["username"].widget.attrs["placeholder"] = self.instance.user.username
+            self.fields["username"].widget.attrs[
+                "placeholder"
+            ] = self.instance.user.username
             self.fields["bio"].widget.attrs["placeholder"] = self.instance.bio
             self.fields["picture"].widget.attrs["placeholder"] = self.instance.picture
-            self.fields["dark_mode"].widget.attrs["placeholder"] = str(self.instance.dark_mode)
+            self.fields["dark_mode"].widget.attrs["placeholder"] = str(
+                self.instance.dark_mode
+            )

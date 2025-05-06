@@ -13,5 +13,7 @@ urlpatterns = [
     path("profile/<int:pk>/settings/edit", views.edit_profile_settings, name="edit_settings"),
     path("post/", views.post, name="post"),
     path("post/<pk>", views.post_page, name="post_page"),
-    path("comment_sent/<pk>", views.comment_sent, name="comment_sent"),
+    path("comment/sent/<pk>", views.comment_sent, name="comment_sent"),
+    path("comment/delete/<pk>", views.comment_delete, name="comment_delete"),
+    path("reply/sent/<pk>", views.reply_sent, name="reply_sent"),
 ]
