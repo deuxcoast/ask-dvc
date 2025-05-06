@@ -1,19 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="col">
+    {% load crispy_forms_tags %}
+    <div class="col py-2">
         {% if form %}
-            <form method="POST">
-                {% csrf_token %}
-                <h2>Make a Post</h2>
-                <br />
-                <!-- categories dropdown -->
-                <!-- <div class="dropdown">
+            <h2>Make a Post</h2>
+            <div class="py-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    <!-- categories dropdown -->
+                    <!-- <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="categories" data-bs-toggle="dropdown" aria-expanded="false">
                         Add Categories
                     </button>
                     <div class="dropdown-menu p-3" aria-labelledby="categories">
                         <div class="btn-group-vertical" role="group" aria-label="category-toggles"> -->
-                <!-- <div class="icheck-material-lightblue">
+                    <!-- <div class="icheck-material-lightblue">
                                 <input type="checkbox" id="categ-general" autocomplete="off">
                                 <label for="categ-general">General</label>
                             </div>
@@ -44,13 +45,12 @@
                             </div>
                             
                         </div> -->
-                <!-- </div>
+                    <!-- </div>
                 </div> -->
-                <br />
-                {{ form.as_p }}
-                <br />
-                <button type="submit" class="btn btn-primary">Post</button>
-            </form>
+                    {% crispy form %}
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </form>
+            </div>
         {% endif %}
     </div>
     <br />

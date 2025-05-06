@@ -8,26 +8,28 @@ from .models import Comment, Post, Profile
 
 
 class PostForm(forms.ModelForm):
-    title = forms.CharField(
-        required=True,
-        widget=forms.widgets.Textarea(
-            attrs={"placeholder": "Title", 
-                   "class": "form-control", 
-                   "rows" : "1"}
-        ),
-        label="",
-    )
-    body = forms.CharField(
-        required=True,
-        widget=forms.widgets.Textarea(
-            attrs={"placeholder": "What is your question?", "class": "form-control"}
-        ),
-        label="",
-    )
+    # title = forms.CharField(
+    #     required=True,
+    #     widget=forms.widgets.Textarea(
+    #         attrs={"placeholder": "Title", "class": "form-control", "rows": "1"}
+    #     ),
+    #     label="",
+    # )
+    # body = forms.CharField(
+    #     required=True,
+    #     widget=forms.widgets.Textarea(
+    #         attrs={"placeholder": "What is your question?", "class": "form-control"}
+    #     ),
+    #     label="",
+    # )
 
     class Meta:
         model = Post
-        exclude = ("user",)
+        fields = ["title", "body"]
+        widgets = {
+            "body": forms.TextInput(attrs={"placeholder": "What are you wondering?"})
+        }
+        exclude = ("user", "likes")
 
 
 class SignUpForm(UserCreationForm):
