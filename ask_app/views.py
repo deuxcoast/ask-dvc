@@ -65,6 +65,9 @@ def profile(request, username):
 
         # Post form logic
         if request.method == "POST":
+            # selected_categories = []
+            # show_category = False
+
             # Get current user
             current_user_profile = request.user.profile
             # Get form data
@@ -74,6 +77,14 @@ def profile(request, username):
                 current_user_profile.follows.remove(profile)
             elif action == "follow":
                 current_user_profile.follows.add(profile)
+
+            # selected_categories = request.POST.getlist('categories')
+            # if selected_categories:
+            #     show_category = True
+
+            # context = {
+            #     'selected_categories': selected_categories,
+            #     'show_button': show_category }
 
             # Save the profile
             current_user_profile.save()
