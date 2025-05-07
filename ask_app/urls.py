@@ -23,6 +23,5 @@ urlpatterns = [
     path("comment/delete/<pk>", views.comment_delete, name="comment_delete"),
     path("reply/sent/<pk>", views.reply_sent, name="reply_sent"),
     path("search/", views.search, name="search"),
-    path("search/", views.search, name="search"),
     path("toggle-dark-mode/", views.toggle_theme, name="toggle_theme"),
 ]

@@ -93,6 +93,15 @@ class CommentCreateForm(forms.ModelForm):
         widgets = {"body": forms.TextInput(attrs={"placeholder": "Add comment..."})}
         labels = {"body": ""}
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.layout = Layout(
+            Field("body", css_class="mb-3"),  # adds spacing below the input
+            Submit("submit", "Reply", css_class="btn btn-success"),
+        )
+
 
 class ProfileSettingsForm(forms.ModelForm):
     picture = forms.ImageField(
@@ -136,3 +145,12 @@ class ProfileSettingsForm(forms.ModelForm):
             self.fields["dark_mode"].widget.attrs["placeholder"] = str(
                 self.instance.dark_mode
             )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.layout = Layout(
+            Field("body", css_class="mb-3"),  # adds spacing below the input
+            Submit("submit", "Reply", css_class="btn btn-success"),
+        )

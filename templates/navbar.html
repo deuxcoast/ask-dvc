@@ -46,7 +46,7 @@
                            role="button"
                            data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            <img src="{% static 'images/pf_default.jpg' %}"
+                            <img src="{{ user.profile.picture.url }}"
                                  alt="Avatar"
                                  class="rounded-circle me-2"
                                  width="32"
