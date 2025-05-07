@@ -182,6 +182,25 @@ def post(request):
         return render(request, "post.html", {"posts": posts, "form": form, "categories": categories})
 
 
+def create_post(request):
+    if not request.user.is_authenticated:
+        return redirect("login")  # or show message
+
+    form = PostForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            messages.success(request, "Your post was successful.")
+            return redirect("index")
+        else:
+            print(form.errors)  # Debug invalid form
+
+    posts = Post.objects.all().order_by("-created_at")
+    return render(request, "post.html", {"form": form, "posts": posts})
+
+
 def post_page(request, pk):
     post = get_object_or_404(
         Post.objects.annotate(comment_count=Count("comments")), id=pk

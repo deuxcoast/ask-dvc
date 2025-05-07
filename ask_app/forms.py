@@ -8,31 +8,14 @@ from .models import Comment, Post, Profile
 
 
 class PostForm(forms.ModelForm):
-    # title = forms.CharField(
-    #     required=True,
-    #     widget=forms.widgets.Textarea(
-    #         attrs={"placeholder": "Title", "class": "form-control", "rows": "1"}
-    #     ),
-    #     label="",
-    # )
-    # body = forms.CharField(
-    #     required=True,
-    #     widget=forms.widgets.Textarea(
-    #         attrs={"placeholder": "What is your question?", "class": "form-control"}
-    #     ),
-    #     label="",
-    # )
-
     class Meta:
         model = Post
-        fields = ["title", "body"]
+        exclude = ("user", "likes")
         widgets = {
             "title": forms.TextInput(attrs={"placeholder": "Title"}),
-            "body": forms.Textarea(attrs={"placeholder": "Ask a question!"})
+            "body": forms.Textarea(attrs={"placeholder": "Ask a question!"}),
         }
-        exclude = ("user", "likes")
 
-    # put a margin between the title and body
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -40,7 +23,7 @@ class PostForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field("title", css_class="mb-3"),
             Field("body", css_class="mb-3"),
-            Submit("submit", "Post", css_class="btn btn-info")
+            Submit("submit", "Post", css_class="btn btn-info"),
         )
 
 
