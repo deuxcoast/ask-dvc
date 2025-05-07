@@ -17,6 +17,11 @@
   border-bottom: 2px solid black !important;
 }
 
+.dropdown-item:hover {
+  color: #e3f2fd; /* Light blue background on hover */
+  background-color: #0d6efd; /* Bootstrap's primary color text */
+}
+
 .comment-icon {
   cursor: pointer;
   transition: color 0.2s ease;

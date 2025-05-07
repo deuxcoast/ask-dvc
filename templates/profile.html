@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if profile %}
-        <div class="container text-center">
+        <div class="container">
             <div class="row">
                 <div class="col-8">
-                    <h1>{{ profile.user.username }}'s Profile</h1>
+                    <h1>@{{ profile.user.username }}</h1>
+                    <h5>Bio:</h5>
+                    <h3>Recent Posts:</h3>
                     {% if posts %}
                         {% for post in posts %}
                             <div class="card">
-                                <h5 class="card-header">{{ post.title }}</h5>
+                                <h5 class="card-header list-group-item-success">
+                                    <a class="link-style" href="{% url 'post_page' post.id %}">{{ post.title }}</a>
+                                </h5>
                                 <div class="card-body">
-                                    <h3 class="card-title">@{{ post.user.username }}</h3>
-                                    <p class="card-text">{{ post.body }}</p>
+                                    <p class="card-text">{{ post.body|truncatechars:300 }}</p>
                                 </div>
                             </div>
                             <br />
@@ -21,7 +24,7 @@
                 </div>
                 <div class="col-4">
                     <div class="card">
-                        <div class="card-header">Follows</div>
+                        <div class="card-header list-group-item-success">Follows</div>
                         <div class="card-body">
                             <p class="card-text">
                                 {% for following in follows %}
@@ -34,12 +37,16 @@
                     <br />
                     <br />
                     <div class="card">
-                        <div class="card-header">Followed By</div>
+                        <div class="card-header list-group-item-success">Followed By</div>
                         <div class="card-body">
                             <p class="card-text">
-                                {% for follower in followed_by %}
-                                    <a href="{% url 'profile' follower.user.id %}">@{{ follower }}</a>
-                                {% endfor %}
+                                {% if followe_by %}
+                                    {% for follower in followed_by %}
+                                        <a href="{% url 'profile' follower.user.id %}">@{{ follower }}</a>
+                                    {% endfor %}
+                                {% else %}
+                                    no followers :(
+                                {% endif %}
                                 <br />
                             </p>
                         </div>
@@ -60,7 +67,7 @@
                                     type="submit">Follow @{{ profile.user.username }}</button>
                         {% endif %}
                         <a href="{% url 'profile_settings' request.user.id %}"
-                        class="btn btn-outline-primary">Go to Profile Settings</a>
+                           class="btn btn-outline-primary">Go to Profile Settings</a>
                     </form>
                 </div>
             </div>
