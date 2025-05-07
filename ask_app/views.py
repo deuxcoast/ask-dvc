@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 
@@ -410,3 +410,18 @@ def search(request):
             "search_results.html",
             {"search_term": search_term, "post_results": post_results},
         )
+
+
+# TODO: implement this differently, a user shouldn't have to be logged in to use
+# dark mode.
+@login_required
+def toggle_theme(request):
+    profile = request.user.profile
+    profile.dark_mode = not profile.dark_mode
+    profile.save()
+    print(profile.dark_mode)
+    theme = "dark" if profile.dark_mode else "light"
+    return HttpResponse(
+        f'document.documentElement.setAttribute("data-bs-theme", "{theme}");',
+        content_type="application/javascript",
+    )
