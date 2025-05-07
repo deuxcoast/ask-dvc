@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group, User
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 
@@ -169,6 +169,25 @@ def post(request):
 
         posts = Post.objects.all().order_by("-created_at")
         return render(request, "post.html", {"posts": posts, "form": form})
+
+
+def create_post(request):
+    if not request.user.is_authenticated:
+        return redirect("login")  # or show message
+
+    form = PostForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            messages.success(request, "Your post was successful.")
+            return redirect("index")
+        else:
+            print(form.errors)  # Debug invalid form
+
+    posts = Post.objects.all().order_by("-created_at")
+    return render(request, "post.html", {"form": form, "posts": posts})
 
 
 def post_page(request, pk):

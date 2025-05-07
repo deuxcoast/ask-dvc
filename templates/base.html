@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en"
+      data-bs-theme="{% if request.user.is_authenticated and request.user.profile.dark_mode %}dark{% else %}light{% endif %}">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +10,9 @@
               type="text/css"
               href="https://bootswatch.com/5/brite/bootstrap.min.css">
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <script src="https://unpkg.com/htmx.org@2.0.4"
+                integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
+                crossorigin="anonymous"></script>
     </head>
     <body>
         {% include 'navbar.html' %}
@@ -33,6 +37,7 @@
     </body>
 </html>
 <script>
+// Fade messages 
   window.addEventListener('DOMContentLoaded', () => {
     const messages = document.getElementById('messages');
     if (messages) {
@@ -43,4 +48,11 @@
       }, 2000); // 2 seconds display time
     }
   });
+
+  // Toggle theme 
+      document.body.addEventListener("htmx:afterRequest", function(event) {
+        if (event.detail.xhr.responseText.includes("data-bs-theme")) {
+            eval(event.detail.xhr.responseText);
+        }
+    });
 </script>

@@ -5,9 +5,10 @@
         {% if form %}
             <h2>Make a Post</h2>
             <div class="py-4">
-                <form method="POST">
+                {% if form.errors %}<div class="alert alert-danger">{{ form.errors }}</div>{% endif %}
+                <form method="POST" action="{% url 'post' %}">
                     {% csrf_token %}
-                    <!--choose categories -->
+                    <!--choose categories-->
                     <p class="d-inline-flex gap-1">
                         <a class="btn btn-outline-light"
                            data-bs-toggle="collapse"
@@ -16,7 +17,7 @@
                         <div class="collapse" id="categoryList">
                             <div class="card card-body">
                                 <p class="d-inline-flex gap-1">
-                                    <!-- general category is selected by default -->
+                                    <!--general category is selected by default-->
                                     <input type="checkbox"
                                            name="categories"
                                            value="general"
