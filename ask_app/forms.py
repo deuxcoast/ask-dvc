@@ -27,9 +27,20 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ["title", "body"]
         widgets = {
-            "body": forms.TextInput(attrs={"placeholder": "What are you wondering?"})
+            "title": forms.TextInput(attrs={"placeholder": "Title"}),
+            "body": forms.Textarea(attrs={"placeholder": "Ask a question!"})
         }
         exclude = ("user", "likes")
+
+    # put a margin between the title and body
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.layout = Layout(
+            Field("title", css_class="mb-3"),
+            Field("body", css_class="mb-3"),
+        )
 
 
 class SignUpForm(UserCreationForm):

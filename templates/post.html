@@ -7,48 +7,28 @@
             <div class="py-4">
                 <form method="POST">
                     {% csrf_token %}
-                    <!-- categories dropdown -->
-                    <!-- <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="categories" data-bs-toggle="dropdown" aria-expanded="false">
-                        Add Categories
-                    </button>
-                    <div class="dropdown-menu p-3" aria-labelledby="categories">
-                        <div class="btn-group-vertical" role="group" aria-label="category-toggles"> -->
-                    <!-- <div class="icheck-material-lightblue">
-                                <input type="checkbox" id="categ-general" autocomplete="off">
-                                <label for="categ-general">General</label>
-                            </div>
-
-                            <div class="icheck-material-indigo">
-                                <input type="checkbox" id="categ-classes" autocomplete="off">
-                                <label for="categ-classes">Classes</label>
-                            </div>
-
-                            <div class="icheck-material-purple">
-                                <input type="checkbox" id="categ-profs" autocomplete="off">
-                                <label for="categ-profs">Professors</label>
-                            </div>
-
-                            <div class="icheck-material-lightgreen">
-                                <input type="checkbox" id="categ-food" autocomplete="off">
-                                <label for="categ-food">Food</label>
-                            </div>
-
-                            <div class="icheck-material-teal">
-                                <input type="checkbox" id="categ-transfer" autocomplete="off">
-                                <label for="categ-transfer">Transfer</label>
-                            </div>
-                            
-                            <div class="icheck-material-pink">
-                                <input type="checkbox" id="categ-geese" autocomplete="off">
-                                <label for="categ-geese">Geese</label>
-                            </div>
-                            
-                        </div> -->
-                    <!-- </div>
-                </div> -->
-                    {% crispy form %}
-                    <button type="submit" class="btn btn-primary">Post</button>
+                    <!--choose categories -->
+                    <p class="d-inline-flex gap-1">
+                        <a class="btn btn-outline-light" data-bs-toggle="collapse" href="#categoryList" aria-expanded="false">
+                            Choose Categories
+                        </a>
+                    <div class="collapse" id="categoryList">
+                        <div class="card card-body">
+                            <p class="d-inline-flex gap-1">
+                                <!-- general category is selected by default -->
+                                <button type="button" class="btn btn-success active" data-bs-toggle="button" aria-pressed="true">General</button>
+                                <button type="button" class="btn btn-success" data-bs-toggle="button">Classes</button>
+                                <button type="button" class="btn btn-success" data-bs-toggle="button">Professors</button>
+                                <button type="button" class="btn btn-success" data-bs-toggle="button">Food</button>
+                                <button type="button" class="btn btn-success" data-bs-toggle="button">Transfer</button>
+                                <button type="button" class="btn btn-success" data-bs-toggle="button">Geese</button>  
+                            </p>                          
+                        </div>
+                    </div>
+                    <br />
+                {% crispy form %}
+                <br />
+                <button type="submit" class="btn btn-info">Post</button>
                 </form>
             </div>
         {% endif %}
