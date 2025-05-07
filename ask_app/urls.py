@@ -15,7 +15,7 @@ urlpatterns = [
         views.edit_profile_settings,
         name="edit_settings",
     ),
-    path("post/", views.post, name="post"),
+    path("post/", views.create_post, name="post"),
     path("post/<pk>", views.post_page, name="post_page"),
     path("post/<pk>/like/", views.like_post, name="like_post"),
     path("comment/<pk>/like/", views.like_comment, name="like_comment"),
@@ -24,4 +24,5 @@ urlpatterns = [
     path("reply/sent/<pk>", views.reply_sent, name="reply_sent"),
     path("search/", views.search, name="search"),
     path("search/", views.search, name="search"),
+    path("toggle-dark-mode/", views.toggle_theme, name="toggle_theme"),
 ]
