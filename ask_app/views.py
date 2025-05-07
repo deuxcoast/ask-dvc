@@ -10,8 +10,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import CommentCreateForm, PostForm, SignUpForm, ProfileSettingsForm
-from .models import Post, Profile
+from .forms import CommentCreateForm, PostForm, ProfileSettingsForm, SignUpForm
+from .models import Comment, Post, Profile
 
 
 # displays all posts on index (home) page
@@ -65,6 +65,9 @@ def profile(request, username):
 
         # Post form logic
         if request.method == "POST":
+            # selected_categories = []
+            # show_category = False
+
             # Get current user
             current_user_profile = request.user.profile
             # Get form data
@@ -74,6 +77,14 @@ def profile(request, username):
                 current_user_profile.follows.remove(profile)
             elif action == "follow":
                 current_user_profile.follows.add(profile)
+
+            # selected_categories = request.POST.getlist('categories')
+            # if selected_categories:
+            #     show_category = True
+
+            # context = {
+            #     'selected_categories': selected_categories,
+            #     'show_button': show_category }
 
             # Save the profile
             current_user_profile.save()
@@ -142,6 +153,7 @@ def signup_user(request):
 
     return render(request, "sign_up.html", {"form": form})
 
+
 def post(request):
     # if the user is logged in, allow them to post
     if request.user.is_authenticated:
@@ -157,6 +169,7 @@ def post(request):
 
         posts = Post.objects.all().order_by("-created_at")
         return render(request, "post.html", {"posts": posts, "form": form})
+
 
 def post_page(request, pk):
     post = get_object_or_404(
@@ -215,19 +228,21 @@ def comment_sent(request, pk):
 
     return redirect("post_page", post.id)
 
+
 def profile_settings(request, pk):
     if request.user.is_authenticated:
         profile = get_object_or_404(Profile, user_id=pk)
 
         # Pass the profile instance to the template
-        return render(request, 'settings.html', {'profile': profile})
+        return render(request, "settings.html", {"profile": profile})
 
     # Redirect to login page if user is not authenticated
-    return redirect('login')
+    return redirect("login")
+
 
 def edit_profile_settings(request, pk):
     if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect("login")
 
     profile = get_object_or_404(Profile, user_id=pk)
 
@@ -235,23 +250,26 @@ def edit_profile_settings(request, pk):
         form = ProfileSettingsForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             profile = form.save(commit=False)
-            profile.user.username = form.cleaned_data['username']
+            profile.user.username = form.cleaned_data["username"]
             profile.user.save()
             profile.save()
 
             # Force database reload to ensure latest data is displayed
             profile.refresh_from_db()
 
-            print("Updated Profile:", profile.bio, profile.picture, profile.dark_mode)  # Debugging confirmation
+            print(
+                "Updated Profile:", profile.bio, profile.picture, profile.dark_mode
+            )  # Debugging confirmation
 
-            return redirect('profile_settings', pk=pk)
+            return redirect("profile_settings", pk=pk)
         else:
             print("Form errors:", form.errors)  # Debugging
 
     else:
         form = ProfileSettingsForm(instance=profile)
 
-    return render(request, 'settings_edit.html', {'form': form, 'profile': profile})
+    return render(request, "settings_edit.html", {"form": form, "profile": profile})
+
 
 @login_required
 def comment_delete(request, pk):
@@ -293,6 +311,7 @@ def like_comment(request, pk):
 
     return redirect("post_page", comment.parent_post.id)
 
+
 def search(request):
     if request.method == "POST":
 
@@ -315,3 +334,18 @@ def search(request):
             "search_results.html",
             {"search_term": search_term, "post_results": post_results},
         )
+
+
+# TODO: implement this differently, a user shouldn't have to be logged in to use
+# dark mode.
+@login_required
+def toggle_theme(request):
+    profile = request.user.profile
+    profile.dark_mode = not profile.dark_mode
+    profile.save()
+    print(profile.dark_mode)
+    theme = "dark" if profile.dark_mode else "light"
+    return HttpResponse(
+        f'document.documentElement.setAttribute("data-bs-theme", "{theme}");',
+        content_type="application/javascript",
+    )

@@ -1,26 +1,68 @@
 {% extends 'base.html' %}
 {% block content %}
-    <!-- {% for post in posts %}
-        <div class="card">
-            <h5 class="card-header">{{ post.title }}</h5>
-            <div class="card-body">
-                <h3 class="card-title">@{{ post.user.username }}</h3>
-                <p class="card-text">{{ post.body }}</p>
-            </div>
+    {% load crispy_forms_tags %}
+    <div class="col py-2">
+        {% if form %}
+            <h2>Make a Post</h2>
+            <div class="py-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    <!--choose categories -->
+                    <p class="d-inline-flex gap-1">
+                        <a class="btn btn-outline-light"
+                           data-bs-toggle="collapse"
+                           href="#categoryList"
+                           aria-expanded="false">Choose Categories</a>
+                        <div class="collapse" id="categoryList">
+                            <div class="card card-body">
+                                <p class="d-inline-flex gap-1">
+                                    <!-- general category is selected by default -->
+                                    <input type="checkbox"
+                                           name="categories"
+                                           value="general"
+                                           id="categ-general"
+                                           class="btn-check"
+                                           checked>
+                                    <label for="categ-general" class="btn btn-success">General</label>
+                                    <input type="checkbox"
+                                           name="categories"
+                                           value="classes"
+                                           id="categ-classes"
+                                           class="btn-check">
+                                    <label for="categ-classes" class="btn btn-success">Classes</label>
+                                    <input type="checkbox"
+                                           name="categories"
+                                           value="profs"
+                                           id="categ-profs"
+                                           class="btn-check">
+                                    <label for="categ-profs" class="btn btn-success">Professors</label>
+                                    <input type="checkbox"
+                                           name="categories"
+                                           value="food"
+                                           id="categ-food"
+                                           class="btn-check">
+                                    <label for="categ-food" class="btn btn-success">Food</label>
+                                    <input type="checkbox"
+                                           name="categories"
+                                           value="transfer"
+                                           id="categ-transfer"
+                                           class="btn-check">
+                                    <label for="categ-transfer" class="btn btn-success">Transfer</label>
+                                    <input type="checkbox"
+                                           name="categories"
+                                           value="geese"
+                                           id="categ-geese"
+                                           class="btn-check">
+                                    <label for="categ-geese" class="btn btn-success">Geese</label>
+                                </p>
+                            </div>
+                        </div>
+                        <br />
+                        {% crispy form %}
+                    </form>
+                </div>
+            {% endif %}
         </div>
         <br />
         <br />
-    {% endfor %} -->
-    <div class="col">
-        {% if form %}
-            <form method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <br />
-                <button type="submit" class="btn btn-primary">Post</button>
-            </form>
-        {% endif %}
-    </div>
-    <br />
-    <br />
-{% endblock %}
+    {% endblock %}
