@@ -27,29 +27,23 @@ def index(request):
                 post.user = request.user
                 post.save()
 
-                selected_categories = request.POST.getlist("categories")
-                # for each category name, checks if it exists
-                # if it exists, return, otherwise create and return
-                for category_name in selected_categories:
-                    category, created = Category.objects.get_or_create(name=category_name)
-                    PostCategory.objects.create(post=post, category=category)
-
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
                 
         if selected_category == "all":
-            posts = Post.objects.annotate(comment_count=Count("comments")).order_by("-created_at")
+            posts = Post.objects.all()
+
         else:
             posts = Post.objects.filter(
-                categories__name__iexact=selected_category
-            ).annotate(
-                comment_count=Count("comments")
-            ).order_by("-created_at")
+                categories__name__iexact=selected_category).annotate(comment_count=Count("comments")).order_by(
+                    "-created_at"
+            )
+
         page_number = request.GET.get("page", 1)
         paginator = Paginator(posts, 50)
         page_obj = paginator.get_page(page_number)
 
-        return render(request, "index.html", {"posts": page_obj})
+        return render(request, "index.html", {"posts": page_obj, "categories": categories})
 
     else:
         posts = Post.objects.annotate(comment_count=Count("comments")).order_by(
