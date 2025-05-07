@@ -16,12 +16,23 @@
                         <div class="card card-body">
                             <p class="d-inline-flex gap-1">
                                 <!-- general category is selected by default -->
-                                <button type="button" class="btn btn-success active" data-bs-toggle="button" aria-pressed="true">General</button>
-                                <button type="button" class="btn btn-success" data-bs-toggle="button">Classes</button>
-                                <button type="button" class="btn btn-success" data-bs-toggle="button">Professors</button>
-                                <button type="button" class="btn btn-success" data-bs-toggle="button">Food</button>
-                                <button type="button" class="btn btn-success" data-bs-toggle="button">Transfer</button>
-                                <button type="button" class="btn btn-success" data-bs-toggle="button">Geese</button>  
+                                <input type="checkbox" name="categories" value="general" id="categ-general" class="btn-check" checked>
+                                <label for="categ-general" class="btn btn-success">General</label>
+
+                                <input type="checkbox" name="categories" value="classes" id="categ-classes" class="btn-check">
+                                <label for="categ-classes" class="btn btn-success">Classes</label>
+
+                                <input type="checkbox" name="categories" value="profs" id="categ-profs" class="btn-check">
+                                <label for="categ-profs" class="btn btn-success">Professors</label>
+
+                                <input type="checkbox" name="categories" value="food" id="categ-food" class="btn-check">
+                                <label for="categ-food" class="btn btn-success">Food</label>
+
+                                <input type="checkbox" name="categories" value="transfer" id="categ-transfer" class="btn-check">
+                                <label for="categ-transfer" class="btn btn-success">Transfer</label>
+
+                                <input type="checkbox" name="categories" value="geese" id="categ-geese" class="btn-check">
+                                <label for="categ-geese" class="btn btn-success">Geese</label>
                             </p>                          
                         </div>
                     </div>
