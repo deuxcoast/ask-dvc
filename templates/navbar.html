@@ -23,44 +23,55 @@
                     </form>
                 </div>
                 <div class="d-flex align-items-center ms-auto">
-                    {% if user.is_authenticated %}
-                        <div class="me-3">
-                            <a type="button" class="btn btn-primary" href="{% url 'post' %}">New Post</a>
-                        </div>
-                        <div class="dropdown text-end">
-                            <a href="#"
-                               class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
-                               data-bs-toggle="dropdown"
-                               aria-expanded="false">
-                                <img src="{{ profile.picture.url }}"
-                                     alt="mdo"
-                                     width="32"
-                                     height="32"
-                                     class="rounded-circle">
-                            </a>
-                            <ul class="dropdown-menu text-small">
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'profile_settings' request.user.id %}">Settings</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'profile' request.user.id %}">Profile</a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
-                                </li>
-                            </ul>
-                        </div>
-                    {% else %}
-                        <a type="button"
-                           class="btn btn-outline-primary me-2"
-                           href="{% url 'login' %}">Login</a>
-                        <a type="button" class="btn btn-primary" href="{% url 'signup' %}">Sign Up</a>
-                    {% endif %}
-                </div>
-            </div>
+            <!-- Right-aligned buttons and dropdown -->
+            <ul class="navbar-nav ms-auto align-items-center">
+                {% if user.is_authenticated %}
+                    <!-- New Post Button -->
+                    <li class="nav-item me-2">
+                        <a class="btn btn-info" href="{% url 'post' %}">New Post</a>
+                    </li>
+                    <!-- Dropdown with profile/settings/logout -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center"
+                           href="#"
+                           id="navbarDropdown"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <img src="{{ profile.picture.url }}"
+                                 alt="Avatar"
+                                 class="rounded-circle me-2"
+                                 width="32"
+                                 height="32">
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile_settings' request.user.id %}">Settings</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <!-- Login and Sign Up buttons for unauthenticated users -->
+                    <li class="nav-item me-2">
+                        <a class="btn btn-light" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-light" href="{% url 'signup' %}">Sign Up</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
-</div>
+    </div>
+</nav>
+<!--</div>-->

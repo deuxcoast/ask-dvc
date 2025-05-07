@@ -1,3 +1,5 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Field, Layout, Submit
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -126,3 +128,12 @@ class ProfileSettingsForm(forms.ModelForm):
             self.fields["bio"].widget.attrs["placeholder"] = self.instance.bio
             self.fields["picture"].widget.attrs["placeholder"] = self.instance.picture
             self.fields["dark_mode"].widget.attrs["placeholder"] = str(self.instance.dark_mode)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.layout = Layout(
+            Field("body", css_class="mb-3"),  # adds spacing below the input
+            Submit("submit", "Reply", css_class="btn btn-success"),
+        )
