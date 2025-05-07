@@ -40,6 +40,7 @@ class PostForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field("title", css_class="mb-3"),
             Field("body", css_class="mb-3"),
+            Submit("submit", "Post", css_class="btn btn-info")
         )
 
 

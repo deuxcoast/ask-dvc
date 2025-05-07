@@ -11,27 +11,42 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 
 from .forms import CommentCreateForm, PostForm, ProfileSettingsForm, SignUpForm
-from .models import Comment, Post, Profile
+from .models import Comment, Post, Profile, Category, PostCategory
 
 
 # displays all posts on index (home) page
 def index(request):
     if request.user.is_authenticated:
         form = PostForm(request.POST or None)
+        selected_category = request.GET.get("category", "all")
+        categories = Category.objects.all()
 
         if request.method == "POST":
             if form.is_valid():
                 post = form.save(commit=False)
                 post.user = request.user
                 post.save()
+
+                selected_categories = request.POST.getlist("categories")
+                # for each category name, checks if it exists
+                # if it exists, return, otherwise create and return
+                for category_name in selected_categories:
+                    category, created = Category.objects.get_or_create(name=category_name)
+                    PostCategory.objects.create(post=post, category=category)
+
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
-
-        posts = Post.objects.annotate(comment_count=Count("comments")).order_by(
-            "-created_at"
-        )
+                
+        if selected_category == "all":
+            posts = Post.objects.annotate(comment_count=Count("comments")).order_by("-created_at")
+        else:
+            posts = Post.objects.filter(
+                categories__name__iexact=selected_category
+            ).annotate(
+                comment_count=Count("comments")
+            ).order_by("-created_at")
         page_number = request.GET.get("page", 1)
-        paginator = Paginator(posts, 10)
+        paginator = Paginator(posts, 50)
         page_obj = paginator.get_page(page_number)
 
         return render(request, "index.html", {"posts": page_obj})
@@ -65,8 +80,6 @@ def profile(request, username):
 
         # Post form logic
         if request.method == "POST":
-            # selected_categories = []
-            # show_category = False
 
             # Get current user
             current_user_profile = request.user.profile
@@ -77,14 +90,6 @@ def profile(request, username):
                 current_user_profile.follows.remove(profile)
             elif action == "follow":
                 current_user_profile.follows.add(profile)
-
-            # selected_categories = request.POST.getlist('categories')
-            # if selected_categories:
-            #     show_category = True
-
-            # context = {
-            #     'selected_categories': selected_categories,
-            #     'show_button': show_category }
 
             # Save the profile
             current_user_profile.save()
@@ -164,11 +169,21 @@ def post(request):
                 post = form.save(commit=False)
                 post.user = request.user
                 post.save()
+
+                selected_categories = request.POST.getlist("categories")
+                # for each category name, checks if it exists
+                # if it exists, return, otherwise create and return
+                for category_name in selected_categories:
+                    category, created = Category.objects.get_or_create(name=category_name)
+                    PostCategory.objects.create(post=post, category=category)
+
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
 
         posts = Post.objects.all().order_by("-created_at")
-        return render(request, "post.html", {"posts": posts, "form": form})
+        categories = Category.objects.all()
+
+        return render(request, "post.html", {"posts": posts, "form": form, "categories": categories})
 
 
 def post_page(request, pk):

@@ -4,6 +4,13 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 
+# create a category model
+class Category(models.Model):
+    # max 25 char for a category name, no repeat category names
+    name = models.CharField(max_length=25, unique=True)
+
+    def __str__(self):
+        return self.name
 
 # Create a Post Model
 class Post(models.Model):
@@ -15,13 +22,20 @@ class Post(models.Model):
     body = models.CharField(max_length=5000)
     # Users that have 'liked' the post
     likes = models.ManyToManyField(User, related_name="likedposts", through="LikedPost")
-
+    # the categories a user chooses for their post
+    categories = models.ManyToManyField(Category, related_name="posts", through="PostCategory") #PostCategory is intermed model for relationship
     # Date post was created
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user} " f"({self.created_at:%Y-%m-%d %H:%M})" f"{self.body}..."
 
+class PostCategory(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.post.title} - {self.category.name}"
 
 class LikedPost(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
