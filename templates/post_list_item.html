@@ -1,0 +1,43 @@
+{% block content %}
+    {% load static %}
+    <head>
+        <link href="{% static 'fontawesomefree/css/fontawesome.css' %}"
+              rel="stylesheet"
+              type="text/css">
+        <link href="{% static 'fontawesomefree/css/solid.css' %}"
+              rel="stylesheet"
+              type="text/css">
+    </head>
+    <div class="card">
+        <h5 class="card-header list-group-item-success">
+            <a class="link-style" href="{% url 'post_page' post.id %}">{{ post.title }}</a>
+        </h5>
+        <div class="card-body">
+            <a class="link-style" href="{% url 'profile' post.user.username %}">
+                <p class="card-title link-style">@{{ post.user.username }}</p>
+            </a>
+            <p class="card-text">{{ post.body|truncatechars:300 }}</p>
+        </div>
+        <div class="d-flex align-items-center mx-2 py-2 px-2 gap-4 icon-bar">
+            <span class="comment-icon d-flex align-items-center gap-1">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'like_post' post.id %}">
+                        {% if user in post.likes.all %}
+                            <i class="fa-solid comment-icon red fa-heart"></i>
+                        {% else %}
+                            <!-- implement modal sign in if user isn't logged in -->
+                            <i class="fa-solid comment-icon red-hover fa-heart"></i>
+                        {% endif %}
+                    </a>
+                {% else %}
+                {% endif %}
+                {{ post.likes.count }}
+            </span>
+            <span id="toggleReplyBtn-{{ comment.id }}"
+                  class="comment-icon reply-icon d-flex align-items-center gap-1">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span class="btn-text">{{ post.comment_count }}</span>
+            </span>
+        </div>
+    </div>
+{% endblock %}

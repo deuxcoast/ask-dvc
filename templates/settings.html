@@ -12,20 +12,5 @@
 
             <img src="{% if profile.picture %}{{ profile.picture.url }}{% else %}/static/images/pf_default.jpg{% endif %}" alt="Profile Picture" class="img-thumbnail" width="150">
         </div>
-
-        <div class="mb-3">
-            <strong>Username:</strong> {{ profile.user.username }}
-        </div>
-
-        <div class="mb-3">
-            <strong>Bio:</strong> {{ profile.bio }}
-        </div>
-
-        <div class="mb-3">
-            <strong>Color Theme:</strong> {% if profile.dark_mode %} Dark Mode {% else %} Light Mode {% endif %}
-        </div>
-
-        <a href="{% url 'edit_settings' request.user.id %}" class="btn btn-primary">Edit Settings</a>
     </div>
-</div>
 {% endblock %}

@@ -61,6 +61,65 @@
                     {% endif %}
                 </div>
             </div>
+            <!-- Right-aligned buttons and dropdown -->
+            <ul class="navbar-nav ms-auto align-items-center">
+                {% if user.is_authenticated %}
+                    <!-- New Post Button -->
+                    <li class="nav-item me-2">
+                        <a class="btn btn-info" href="{% url 'post' %}">New Post</a>
+                    </li>
+                    <!-- Dropdown with profile/settings/logout -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center"
+                           href="#"
+                           id="navbarDropdown"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <img src="{{ user.profile.picture.url }}"
+                                 alt="Avatar"
+                                 class="rounded-circle me-2"
+                                 width="32"
+                                 height="32">
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end"
+                            aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile_settings' user.id %}">Settings</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a>
+                            </li>
+                            <li>
+                                <div>
+                                    <button hx-get="{% url 'toggle_theme' %}"
+                                            hx-trigger="click"
+                                            hx-swap="none"
+                                            hx-target="this"
+                                            hx-ext="response-target"
+                                            hx-headers='{"X-Requested-With": "XMLHttpRequest"}'>Toggle Theme</button>
+                                </div>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <!-- Login and Sign Up buttons for unauthenticated users -->
+                    <li class="nav-item me-2">
+                        <a class="btn btn-light" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-light" href="{% url 'signup' %}">Sign Up</a>
+                    </li>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
-</div>
+    </div>
+</nav>
+<!--</div>-->
