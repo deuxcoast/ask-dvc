@@ -24,4 +24,6 @@ urlpatterns = [
     path("reply/sent/<pk>", views.reply_sent, name="reply_sent"),
     path("search/", views.search, name="search"),
     path("toggle-dark-mode/", views.toggle_theme, name="toggle_theme"),
+    path("search/", views.search, name="search"),
+    path("toggle-dark-mode/", views.toggle_theme, name="toggle_theme"),
 ]
