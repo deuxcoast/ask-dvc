@@ -31,8 +31,10 @@ def index(request):
                 return redirect("index")
                 
         if selected_category == "all":
-            posts = Post.objects.all()
-
+            posts = Post.objects.annotate(comment_count=Count("comments")).order_by(
+                "-created_at"
+            )
+        
         else:
             posts = Post.objects.filter(
                 categories__name__iexact=selected_category).annotate(comment_count=Count("comments")).order_by(
