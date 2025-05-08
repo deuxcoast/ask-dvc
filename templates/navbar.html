@@ -32,7 +32,7 @@
                                class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
                                data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <img src="{{ profile.picture.url }}"
+                                <img src="{% if profile.picture %}{{ profile.picture.url }}{% else %}/static/images/pf_default.jpg{% endif %}"
                                      alt="mdo"
                                      width="32"
                                      height="32"

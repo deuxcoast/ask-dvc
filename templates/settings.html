@@ -10,7 +10,7 @@
         <div class="mb-3">
             <strong>Profile Picture:</strong><br>
 
-            <img src="{{ profile.picture.url }}" alt="Profile Picture" class="img-thumbnail" width="150">
+            <img src="{% if profile.picture %}{{ profile.picture.url }}{% else %}/static/images/pf_default.jpg{% endif %}" alt="Profile Picture" class="img-thumbnail" width="150">
         </div>
 
         <div class="mb-3">
