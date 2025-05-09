@@ -1,9 +1,14 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SITE_ID = 2
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -27,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
+    "django.contrib.sites",
     "ask_app",
     "crispy_forms",
     "crispy_bootstrap4",
@@ -137,9 +143,30 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        "APP": {"client_id": "123", "secret": "456", "key": ""}
+        # Skip the intermediate confirmation page
+        "SCOPE": {
+            "profile",
+            "email",
+        },
+        "AUTH_PARAMS": {"access_type": "online"},
+        "APP": {
+            "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+            "secret": os.getenv("GOOGLE_SECRET"),
+            "key": "",
+        },
     }
 }
+
+# All Auth Settings
+# ACCOUNT_ADAPTER = "ask_app.adapters.CustomAccountAdapter"
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_REQUIRED = True  # Email should be coming from Google
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # Or 'username' or 'email'
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = (
+    "none"  # Or 'optional'. Google usually provides verified emails.
+)
+SOCIALACCOUNT_LOGIN_ON_GET = True  # Skip the intermediate confirmation page
+
+
+LOGIN_REDIRECT_URL = "/"

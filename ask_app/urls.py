@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 
 from . import views
 
@@ -6,6 +6,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("profile_list/", views.profile_list, name="profile_list"),
     path("profile/<str:username>", views.profile, name="profile"),
+    path("accounts/", include("allauth.urls")),
     path("login/", views.login_user, name="login"),
     path("logout/", views.logout_user, name="logout"),
     path("signup/", views.signup_user, name="signup"),
@@ -22,8 +23,6 @@ urlpatterns = [
     path("comment/sent/<pk>", views.comment_sent, name="comment_sent"),
     path("comment/delete/<pk>", views.comment_delete, name="comment_delete"),
     path("reply/sent/<pk>", views.reply_sent, name="reply_sent"),
-    path("search/", views.search, name="search"),
-    path("toggle-dark-mode/", views.toggle_theme, name="toggle_theme"),
     path("search/", views.search, name="search"),
     path("toggle-dark-mode/", views.toggle_theme, name="toggle_theme"),
 ]

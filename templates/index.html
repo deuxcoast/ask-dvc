@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="container">
-            <!-- category filter buttons -->
-            <h5>Categories</h5>
-            <div class="category-filters mb-4">
-                <a href="{% url 'index' %}?category=all" class="btn btn-outline-light me-2 mb-2 category-btn">All</a>
-                {% for category in categories %}
-                <a href="{% url 'index' %}?category={{ category.name }}" class="btn btn-outline-light me-2 mb-2 category-btn">{{ category.name }}</a>
-                {% endfor %}
-            </div>
-
+        <!--<h5>Categories</h5>-->
+        <!--<div class="category-filters mb-4">-->
+        <!--    <a href="{% url 'index' %}?category=all"-->
+        <!--       class="btn btn-outline-light me-2 mb-2 category-btn">All</a>-->
+        <!--    {% for category in categories %}-->
+        <!--        <a href="{% url 'index' %}?category={{ category.name }}"-->
+        <!--           class="btn btn-outline-light me-2 mb-2 category-btn">{{ category.name }}</a>-->
+        <!--    {% endfor %}-->
+        <!--</div>-->
         <div style="grid-template-columns: 1fr" class="d-grid gap-3">
             {% for post in posts %}
                 {% include 'post_list_item.html' %}

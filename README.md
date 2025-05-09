@@ -36,6 +36,10 @@ askDVC was built over 4 weeks in the Spring of 2025 as part of
 - [Django](https://www.djangoproject.com/): The project is written in Python
   using the Django web framework.
 
+- [HTMX](https://htmx.org/): A lightweight JavaScript library that extends HTML
+  attributes, allowing us to build a modern, interactive UI without writing lots
+  of JavaScript.
+
 - [Bootstrap](https://getbootstrap.com): The UI is built with the Bootstrap
   toolkit, with theming provided by [Bootswatch](https://bootswatch.com/).
 
@@ -52,7 +56,7 @@ Github: [@FlyHighStem](https://github.com/FlyHighStem)
 
 Github: [@deuxcoast](https://github.com/deuxcoast)
 
-#### Jordan
+#### Jordan Racher
 
 Github: [@jayracher](https://github.com/jayracher)
 
@@ -60,7 +64,7 @@ Github: [@jayracher](https://github.com/jayracher)
 
 Github: [@karen2zhao](https://github.com/karen2zhao)
 
-#### Matthew
+#### Matthew Aguirre
 
 Github: [@mattag1234](https://github.com/mattag1234)
 
@@ -100,11 +104,10 @@ the project**. After cloning the project, we should `cd` into the repository.
 
    `pip install -r requirements.txt`
 
-6. Run the migrations necessary to bring the database up to the correct
+6. Create and run the migrations necessary to bring the database up to the correct
    state.
 
+   `python manage.py makemigrations`
    `python manage.py migrate`
 
 7. Spin up the development server and get going!
-
-   `python manage.py runserver`

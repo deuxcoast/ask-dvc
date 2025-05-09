@@ -1,0 +1,97 @@
+{% extends "base.html" %} {# Or "account/base.html" or your project's base Bootstrap template #}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% block head_title %}
+    {% trans "Complete Your Signup" %}
+{% endblock %}
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center">{% trans "Almost there!" %}</h2>
+                    <p class="text-center text-muted">
+                        {% blocktrans with provider_name=account.get_provider.name %}
+          You've successfully connected with your {{ provider_name }} account.
+          All that's left is to pick a username :)
+          {% endblocktrans %}
+                    </p>
+                    <form class="signup"
+                          id="signup_form"
+                          method="post"
+                          action="{% url 'socialaccount_signup' %}">
+                        {% csrf_token %}
+                        {% comment %}
+          Handle the email field:
+          If allauth includes an email field in the form (form.email exists)
+          and it has a value (form.email.value is not None or empty, meaning it's pre-filled from Google),
+          we render it as a hidden input to ensure its value is submitted.
+          The user should not edit it on this screen as it comes from the verified social provider.
+          We also display the email to the user for transparency.
+                        {% endcomment %}
+                        {% if form.email %}
+                            {% if form.email.value %}
+                                <input type="hidden"
+                                       name="{{ form.email.html_name }}"
+                                       value="{{ form.email.value }}">
+                                <div class="mb-3">
+                                    <label class="form-label">{% trans "Email (from Google)" %}:</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           value="{{ form.email.value }}"
+                                           readonly
+                                           disabled>
+                                    <small class="form-text text-muted">{% trans "This email is linked to your Google account." %}</small>
+                                </div>
+                            {% else %}
+                                {% comment %}
+              This case is problematic: an email field exists but has no value.
+              If ACCOUNT_EMAIL_REQUIRED is True, this will likely cause the "field required" error.
+              This suggests the email wasn't fetched or populated correctly from Google.
+              For now, rendering it will make the missing field visible.
+                                {% endcomment %}
+                                <div class="alert alert-warning">
+                                    {% trans "Email information was not automatically filled. Please check the field below." %}
+                                </div>
+                                {{ form.email|as_crispy_field }}
+                            {% endif %}
+                        {% endif %}
+                        {% comment %} Render only the username field for input using crispy forms {% endcomment %}
+                        {% if form.username %}
+                            {{ form.username|as_crispy_field }}
+                        {% else %}
+                            <div class="alert alert-danger mt-3">
+                                {% trans "The username field is not available in the form. Please check your Django Allauth configuration (e.g., ACCOUNT_USERNAME_REQUIRED)." %}
+                            </div>
+                        {% endif %}
+                        {% comment %}
+          Render any OTHER hidden fields allauth might need (e.g., CSRF, flow control).
+          Exclude email and username if we've explicitly handled them.
+                        {% endcomment %}
+                        {% for field in form %}
+                            {% if field.is_hidden and field.name != 'email' and field.name != 'username' %}{{ field }}{% endif %}
+                        {% endfor %}
+                        {% if redirect_field_value %}
+                            <input type="hidden"
+                                   name="{{ redirect_field_name }}"
+                                   value="{{ redirect_field_value }}" />
+                        {% endif %}
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-primary" type="submit">{% trans "Complete Sign Up" %}</button>
+                        </div>
+                    </form>
+                    {% if form.errors %}
+                        <div class="mt-3">
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <div class="alert alert-danger" role="alert">{{ field|capfirst }}: {{ error }}</div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

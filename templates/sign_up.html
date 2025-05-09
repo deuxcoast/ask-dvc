@@ -1,13 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="col-md-6 offset-md-3">
-        <h1>Sign Up</h1>
-        <br />
-        <form method="POST" action="">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <br />
-            <button type="submit" class="btn btn-primary">Sign-up</button>
-        </form>
-    </div>
-{% endblock %}
+    <!------ Include the above in your HEAD tag ---------->
+    <!--<link rel="stylesheet"-->
+    <!--      href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">-->
+    <div class="container">
+        <div class="card ">
+            <article class="card-body mx-auto">
+                <h4 class="card-title mt-3 text-center">Create Account</h4>
+                <p class="text-center">Creating an account is as easy as signing in with your preferred provider.</p>
+                <p>
+                    <div class="d-flex justify-content-center py-2">
+                        <div class="center">
+                            <a href="" class="btn btn-block btn-twitter"> <i class="fa-brands fa-google"></i>   Login with Google</a>
+                        </div>
+                        <!--<div>-->
+                        <!--    <a href="" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Login with Facebook</a>-->
+                        <!--</div>-->
+                    </p>
+                </div>
+            {% endblock %}

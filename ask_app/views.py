@@ -10,8 +10,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import CommentCreateForm, PostForm, ProfileSettingsForm, SignUpForm
-from .models import Comment, Post, Profile, Category, PostCategory
+from .forms import (
+    CommentCreateForm,
+    OnboardingForm,
+    PostForm,
+    ProfileSettingsForm,
+    SignUpForm,
+)
+from .models import Category, Comment, Post, PostCategory, Profile
 
 
 # displays all posts on index (home) page
@@ -29,23 +35,26 @@ def index(request):
 
                 messages.success(request, "Your post was successful.")
                 return redirect("index")
-                
+
         if selected_category == "all":
             posts = Post.objects.annotate(comment_count=Count("comments")).order_by(
                 "-created_at"
             )
-        
+
         else:
-            posts = Post.objects.filter(
-                categories__name__iexact=selected_category).annotate(comment_count=Count("comments")).order_by(
-                    "-created_at"
+            posts = (
+                Post.objects.filter(categories__name__iexact=selected_category)
+                .annotate(comment_count=Count("comments"))
+                .order_by("-created_at")
             )
 
         page_number = request.GET.get("page", 1)
         paginator = Paginator(posts, 50)
         page_obj = paginator.get_page(page_number)
 
-        return render(request, "index.html", {"posts": page_obj, "categories": categories})
+        return render(
+            request, "index.html", {"posts": page_obj, "categories": categories}
+        )
 
     else:
         posts = Post.objects.annotate(comment_count=Count("comments")).order_by(
@@ -105,54 +114,10 @@ def profile(request, username):
         return redirect("index")
 
 
-def login_user(request):
-    # if the request method is POST, then handle the form submission, otherwise
-    # send the user to the login page
-    if request.method == "POST":
-        # Assign username and password from form submission to variables
-        username = request.POST["username"]
-        password = request.POST["password"]
-
-        # use the above credentials to login. If the credentials match an existing
-        # user than a user object will be returned
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, ("You have succesfully logged in."))
-            return redirect("index")
-        else:
-            messages.error(request, ("There was an error logging in."))
-            return redirect("login")
-    else:
-        return render(request, "login.html", {})
-
-
 def logout_user(request):
     logout(request)
     messages.success(request, ("You have been logged out."))
     return redirect("index")
-
-
-def signup_user(request):
-    # Get the form model
-    form = SignUpForm()
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data["username"]
-            password = form.cleaned_data["password1"]
-            # first_name = form.cleaned_data["first_name"]
-            # last_name = form.cleaned_data["last_name"]
-            # email = form.cleaned_data["email"]
-
-            # Login the user
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            messages.success(request, "You have been logged in.")
-            return redirect("index")
-
-    return render(request, "sign_up.html", {"form": form})
 
 
 def post(request):
@@ -170,7 +135,9 @@ def post(request):
                 # for each category name, checks if it exists
                 # if it exists, return, otherwise create and return
                 for category_name in selected_categories:
-                    category, created = Category.objects.get_or_create(name=category_name)
+                    category, created = Category.objects.get_or_create(
+                        name=category_name
+                    )
                     PostCategory.objects.create(post=post, category=category)
 
                 messages.success(request, "Your post was successful.")
@@ -179,26 +146,11 @@ def post(request):
         posts = Post.objects.all().order_by("-created_at")
         categories = Category.objects.all()
 
-        return render(request, "post.html", {"posts": posts, "form": form, "categories": categories})
-
-
-def create_post(request):
-    if not request.user.is_authenticated:
-        return redirect("login")  # or show message
-
-    form = PostForm(request.POST or None)
-    if request.method == "POST":
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.user = request.user
-            post.save()
-            messages.success(request, "Your post was successful.")
-            return redirect("index")
-        else:
-            print(form.errors)  # Debug invalid form
-
-    posts = Post.objects.all().order_by("-created_at")
-    return render(request, "post.html", {"form": form, "posts": posts})
+        return render(
+            request,
+            "post.html",
+            {"posts": posts, "form": form, "categories": categories},
+        )
 
 
 def create_post(request):
