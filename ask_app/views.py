@@ -10,13 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.http import url_has_allowed_host_and_scheme
 
-from .forms import (
-    CommentCreateForm,
-    OnboardingForm,
-    PostForm,
-    ProfileSettingsForm,
-    SignUpForm,
-)
+from .forms import CommentCreateForm, PostForm, ProfileSettingsForm
 from .models import Category, Comment, Post, PostCategory, Profile
 
 

@@ -81,13 +81,10 @@
                         </ul>
                     </li>
                 {% else %}
-                    <!-- Login and Sign Up buttons for unauthenticated users -->
+                    <!-- Sign In/Sign Up button for unauthenticated users -->
                     <li class="nav-item me-2">
                         <a class="btn btn-light" href="{% provider_login_url 'google' %}"> <i class="fa-brands fa-google"></i>   Login with Google</a>
                     </li>
-                    <!--<li class="nav-item">-->
-                    <!--    <a class="btn btn-light" href="{% url 'signup' %}">Sign Up</a>-->
-                    <!--</li>-->
                 {% endif %}
             </ul>
         </div>
