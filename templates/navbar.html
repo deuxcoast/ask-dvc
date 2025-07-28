@@ -34,6 +34,12 @@
             </div>
             <!-- Right-aligned buttons and dropdown -->
             <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item me-4">
+                    <button id="theme-toggle-button">
+                        <i class="fa-solid fa-sun"></i>
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </li>
                 {% if user.is_authenticated %}
                     <!-- New Post Button -->
                     <li class="nav-item me-2">

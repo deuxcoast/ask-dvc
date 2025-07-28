@@ -30,6 +30,13 @@
                         {% endif %}
                     </a>
                 {% else %}
+                    <!-- If user is not logged in -->
+                    {% if user in post.likes.all %}
+                        <i class="fa-solid comment-icon red fa-heart"></i>
+                    {% else %}
+                        <!-- implement modal sign in if user isn't logged in -->
+                        <i class="fa-solid comment-icon red-hover fa-heart"></i>
+                    {% endif %}
                 {% endif %}
                 {{ post.likes.count }}
             </span>
