@@ -81,6 +81,8 @@ the project**. After cloning the project, we should `cd` into the repository.
 > These commands are for zsh/bsh shells, which should work for most MacOS and
 > Linux users. For Windows users the commands below may be different.
 
+### Initial Setup (first time only)
+
 1. Clone the project. To do this, `cd` into the directory you want the project
    to be stored in, then run the following command:
 
@@ -111,3 +113,25 @@ the project**. After cloning the project, we should `cd` into the repository.
    `python manage.py migrate`
 
 7. Spin up the development server and get going!
+   `python manage.py runserver`
+
+### Running the Project After Initial Setup
+
+The initial setup above is only required once. From there on out the only
+steps that are required are ensuring that the python virtual environment has
+been activated, and that the development server is running.
+
+This can be done by opening a terminal in the base directory of the project and
+running the following commands:
+
+1. Activate the virtual enviornment.
+
+`source .venv/bin/activate`
+
+2. Spin up the development server.
+
+`python manage.py runserver`
+
+Documentation for most of the commands above pertaining to virtual environments
+can be found [here](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/),
+and documentation for the Django commands can be found [here](https://docs.djangoproject.com/en/5.2/ref/django-admin/).
